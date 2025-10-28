@@ -12,13 +12,13 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Otsikko</th>
+          <th>Nimi</th>
           <th>Kuvaus</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="kysely : ${kyselyt}">
-          <td th:text="${kysely.otsikko}">Otsikko</td>
+          <td th:text="${kysely.nimi}">Nimi</td>
           <td th:text="${kysely.kuvaus}">Kuvaus</td>
         </tr>
       </tbody>

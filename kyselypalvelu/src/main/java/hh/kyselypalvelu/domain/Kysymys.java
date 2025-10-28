@@ -2,7 +2,6 @@ package hh.kyselypalvelu.domain;
 
 import java.util.List;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +16,6 @@ public class Kysymys {
     private String kysymys;
     private String kysely;
 
-    @ElementCollection
     private List<String> vastaus;
 
     public Kysymys() {
