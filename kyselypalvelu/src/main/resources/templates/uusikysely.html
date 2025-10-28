@@ -8,7 +8,20 @@
 
   <body>
     <h1>Uusi Kysely</h1>
-    <input type="text" placeholder="Lisää tähän kysely(testi)" />
+    <form action="/tallennaKysely" method="post">
+      <input type="text" name="kysely" placeholder="Lisää tähän kyselyn otsikko" />
+      <br/>
+      <input type="text" name="kuvaus" placeholder="Lisää tähän kyselyn kuvaus" />
+      <br/>
+      <input type="text" name="kysymys" placeholder="Lisää tähän kyselyn kysymys" />
+      <br/>
+      <input type="submit" value="Tallenna Kysely" />
+    </form>
+
     <a href="/kyselyt">Palaa takaisin</a>
+
+    <a href="/uusikysymys">Lisää uusi kysymys</a>
+
+ 
   </body>
 </html>

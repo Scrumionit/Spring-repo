@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.List;
 
 @Entity
@@ -13,6 +15,8 @@ public class Kysely {
     private Long kysely_id;
     private String nimi;
     private String kuvaus;
+
+    @OneToMany(mappedBy = "kysely")
     private List<Kysymys> kysymykset;
 
     public Kysely() {

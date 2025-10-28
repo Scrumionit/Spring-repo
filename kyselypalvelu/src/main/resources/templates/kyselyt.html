@@ -9,6 +9,21 @@
   <body>
     <h1>Kyselyt</h1>
 
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Otsikko</th>
+          <th>Kuvaus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="kysely : ${kyselyt}">
+          <td th:text="${kysely.otsikko}">Otsikko</td>
+          <td th:text="${kysely.kuvaus}">Kuvaus</td>
+        </tr>
+      </tbody>
+    </table>
+
     <a href="/uusikysely" class="btn btn-success">Lisää Kysely</a>
   </body>
 </html>

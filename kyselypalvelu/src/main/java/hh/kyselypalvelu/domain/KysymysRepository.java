@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KysymysRepository extends CrudRepository<Kysymys, Long> {
-    List<Kysymys> findByKysymysId(Long kysymys_id);
+    List<Kysymys> findByKysymys(String kysymys);
 }

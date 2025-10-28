@@ -2,6 +2,7 @@ package hh.kyselypalvelu.domain;
 
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,13 +15,15 @@ public class Kysymys {
     private Long kysymys_id;
     private String kysymystyyppi;
     private String kysymys;
+    private String kysely;
+
+    @ElementCollection
     private List<String> vastaus;
 
     public Kysymys() {
     }
     
-    public Kysymys(Long kysymys_id, String kysymystyyppi, String kysymys, List<String> vastaus) {
-        this.kysymys_id = kysymys_id;
+    public Kysymys(String kysymystyyppi, String kysymys, List<String> vastaus) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymys = kysymys;
         this.vastaus = vastaus;
