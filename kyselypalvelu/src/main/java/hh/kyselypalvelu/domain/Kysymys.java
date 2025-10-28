@@ -6,16 +6,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Kysymys {
+
+    @ManyToOne
+    @JoinColumn(name="kysely_id")
+    private Kysely kysely;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysymys_id;
     private String kysymystyyppi;
     private String kysymys;
-    private String kysely;
-
     private List<String> vastaus;
 
     public Kysymys() {

@@ -1,5 +1,6 @@
 package hh.kyselypalvelu.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +17,7 @@ public class Kysely {
     private String nimi;
     private String kuvaus;
 
-    @OneToMany(mappedBy = "kysely")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
     private List<Kysymys> kysymykset;
 
     public Kysely() {

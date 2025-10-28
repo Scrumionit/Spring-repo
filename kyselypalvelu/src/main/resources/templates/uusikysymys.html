@@ -8,6 +8,13 @@
 
   <body>
     <h1>Uusi Kysymys</h1>
-    <input type="text" placeholder="Kirjoita kysymys" />
+    <form action="/tallennaKysymys" method="post">
+      <input type="text" name="kysymystyyppi" placeholder="Lisää tähän kysymystyyppi" />
+      <br/>
+      <input type="text" name="kysymys" placeholder="Lisää tähän kysymys" />
+      <br/>
+      <input type="text" name="vastaus" placeholder="Lisää tähän vastausvaihtoehdot pilkuilla erotettuna" />
+      <br/>
+      <input type="submit" value="Tallenna Kysymys" />
   </body>
 </html>
