@@ -32,6 +32,14 @@ public class Kysymys {
         this.vastaus = vastaus;
     }
 
+    public Kysely getKysely() {
+        return kysely;
+    }
+
+    public void setKysely(Kysely kysely) {
+        this.kysely = kysely;
+    }
+    
     public Long getKysymys_id() {
         return kysymys_id;
     }

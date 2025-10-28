@@ -42,6 +42,7 @@ public class KyselyController {
     @GetMapping("/uusikysymys")
     public String naytaUusiKysymysLomake(Model model) {
         model.addAttribute("kysymys", new Kysymys());
+        model.addAttribute("kyselyt", kyselyRepository.findAll());
         return "uusikysymys";
     }
 
