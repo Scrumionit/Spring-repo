@@ -20,6 +20,10 @@
         <tr th:each="kysely : ${kyselyt}">
           <td th:text="${kysely.nimi}">Nimi</td>
           <td th:text="${kysely.kuvaus}">Kuvaus</td>
+          <td>
+            <!-- Nappi joka avaa kyselyn -->
+            <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Avaa</a>
+          </td>
         </tr>
       </tbody>
     </table>

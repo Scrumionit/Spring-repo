@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="'Kysely: ' + ${kysely.nimi}">Kysely</title>
+</head>
+<body>
+  <h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
+  <p th:text="${kysely.kuvaus}">Kuvaus</p>
+
+  <h2>Kysymykset</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Kysymystyyppi</th>
+        <th>Kysymys</th>
+        <th>Vastausvaihtoehdot</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="kysymys : ${kysymykset}">
+        <td th:text="${kysymys.kysymystyyppi}">Tyyppi</td>
+        <td th:text="${kysymys.kysymys}">Kysymys</td>
+        <td th:text="${#strings.arrayJoin(kysymys.vastaus, ', ')}">Vaihtoehdot</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br />
+  <a th:href="@{/uusikysymys}" class="btn btn-primary">Lisää uusi kysymys</a>
+  <br /><br />
+  <a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
+</body>
+</html>

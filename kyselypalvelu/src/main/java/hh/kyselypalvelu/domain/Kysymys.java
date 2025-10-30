@@ -12,23 +12,24 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Kysymys {
 
-    @ManyToOne
-    @JoinColumn(name="kysely_id")
-    private Kysely kysely;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysymys_id;
     private String kysymystyyppi;
-    private String kysymys;
+    private String kysymysteksti;
     private List<String> vastaus;
+
+    @ManyToOne
+    @JoinColumn(name="kysely_id")
+    private Kysely kysely;
+
 
     public Kysymys() {
     }
     
-    public Kysymys(String kysymystyyppi, String kysymys, List<String> vastaus) {
+    public Kysymys(String kysymystyyppi, String kysymysteksti, List<String> vastaus) {
         this.kysymystyyppi = kysymystyyppi;
-        this.kysymys = kysymys;
+        this.kysymysteksti = kysymysteksti;
         this.vastaus = vastaus;
     }
 
@@ -56,12 +57,12 @@ public class Kysymys {
         this.kysymystyyppi = kysymystyyppi;
     }
 
-    public String getKysymys() {
-        return kysymys;
+    public String getKysymysteksti() {
+        return kysymysteksti;
     }
 
-    public void setKysymys(String kysymys) {
-        this.kysymys = kysymys;
+    public void setKysymysteksti(String kysymysteksti) {
+        this.kysymysteksti = kysymysteksti;
     }
 
     public List<String> getVastaus() {
@@ -74,7 +75,7 @@ public class Kysymys {
 
     @Override
     public String toString() {
-        return "Kysymys [kysymys_id=" + kysymys_id + ", kysymystyyppi=" + kysymystyyppi + ", kysymys=" + kysymys
+        return "Kysymys [kysymys_id=" + kysymys_id + ", kysymystyyppi=" + kysymystyyppi + ", kysymysteksti=" + kysymysteksti
                 + ", vastaus=" + vastaus + "]";
     }
 }

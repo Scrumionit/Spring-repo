@@ -7,7 +7,9 @@ import hh.kyselypalvelu.domain.KysymysRepository;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 @Controller
@@ -33,7 +35,7 @@ public class KyselyController {
         return "uusikysely";
     }
 
-    @PostMapping(value="/tallennaKysely")
+    @PostMapping(value = "/tallennaKysely")
     public String tallennaKysely(Kysely kysely) {
         kyselyRepository.save(kysely);
         return "redirect:/kyselyt";
@@ -47,10 +49,32 @@ public class KyselyController {
     }
 
     @PostMapping("/tallennaKysymys")
-    public String tallennaKysymys(Kysymys kysymys) {
-        kysymysRepository.save(kysymys);
+    public String tallennaKysymys(
+            @RequestParam String kysymystyyppi,
+            @RequestParam String kysymysteksti,
+            @RequestParam Long kysely_id) {
+
+        Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
+        if (kysely != null) {
+            Kysymys kysymys = new Kysymys(kysymystyyppi, kysymysteksti, null);
+            kysymys.setKysely(kysely);
+            kysymysRepository.save(kysymys);
+        }
         return "redirect:/kyselyt";
     }
 
+    @GetMapping("/kysely/{id}")
+    public String naytaKysely(@PathVariable("id") Long id, Model model) {
+        Kysely kysely = kyselyRepository.findById(id).orElse(null);
+
+        if (kysely == null) {
+            return "redirect:/kyselyt";
+        }
+
+        model.addAttribute("kysely", kysely);
+        model.addAttribute("kysymykset", kysely.getKysymykset());
+
+        return "kysely";
+    }
 
 }

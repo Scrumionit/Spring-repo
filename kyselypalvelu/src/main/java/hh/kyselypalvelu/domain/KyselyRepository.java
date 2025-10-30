@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KyselyRepository extends CrudRepository<Kysely, Long> {
-    List<Kysely> findByNimi(String nimi);
+
 }
