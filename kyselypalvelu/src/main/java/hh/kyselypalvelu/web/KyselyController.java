@@ -5,6 +5,8 @@ import hh.kyselypalvelu.domain.KyselyRepository;
 import hh.kyselypalvelu.domain.Kysymys;
 import hh.kyselypalvelu.domain.KysymysRepository;
 
+import java.util.Arrays;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,17 +51,28 @@ public class KyselyController {
     }
 
     @PostMapping("/tallennaKysymys")
-    public String tallennaKysymys(
-            @RequestParam String kysymystyyppi,
-            @RequestParam String kysymysteksti,
-            @RequestParam Long kysely_id) {
+    public String tallennaKysymys(@RequestParam(required = false) Long kysely_id,
+            @RequestParam(required = false) String vastaus,
+            Kysymys kysymys) {
 
-        Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
-        if (kysely != null) {
-            Kysymys kysymys = new Kysymys(kysymystyyppi, kysymysteksti, null);
-            kysymys.setKysely(kysely);
-            kysymysRepository.save(kysymys);
+        if (kysely_id != null) {
+            Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
+            if (kysely != null) {
+                kysymys.setKysely(kysely);
+            }
         }
+
+        // pilkotaan pilkuilla erotetut vaihtoehdot listaksi
+        if (vastaus != null && !vastaus.isEmpty()) {
+            kysymys.setVastaus(Arrays.asList(vastaus.split(",")));
+        }
+
+        kysymysRepository.save(kysymys);
+
+        if (kysely_id != null) {
+            return "redirect:/kysely/" + kysely_id;
+        }
+
         return "redirect:/kyselyt";
     }
 
