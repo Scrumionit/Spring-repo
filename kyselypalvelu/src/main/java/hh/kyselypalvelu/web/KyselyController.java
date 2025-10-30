@@ -63,9 +63,9 @@ public class KyselyController {
         return "redirect:/kyselyt";
     }
 
-    @GetMapping("/kysely/{id}")
-    public String naytaKysely(@PathVariable("id") Long id, Model model) {
-        Kysely kysely = kyselyRepository.findById(id).orElse(null);
+    @GetMapping("/kysely/{kysely_id}")
+    public String naytaKysely(@PathVariable Long kysely_id, Model model) {
+        Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
 
         if (kysely == null) {
             return "redirect:/kyselyt";

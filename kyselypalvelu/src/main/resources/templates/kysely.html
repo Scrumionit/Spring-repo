@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title th:text="'Kysely: ' + ${kysely.nimi}">Kysely</title>
+  <title th:text="'Kysely: ' + ${kysely.nimi}"></title>
 </head>
 <body>
   <h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
@@ -20,7 +20,7 @@
     <tbody>
       <tr th:each="kysymys : ${kysymykset}">
         <td th:text="${kysymys.kysymystyyppi}">Tyyppi</td>
-        <td th:text="${kysymys.kysymys}">Kysymys</td>
+        <td th:text="${kysymys.kysymysteksti}">Kysymys</td>
         <td th:text="${#strings.arrayJoin(kysymys.vastaus, ', ')}">Vaihtoehdot</td>
       </tr>
     </tbody>
