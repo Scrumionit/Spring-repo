@@ -76,9 +76,4 @@ public class Kysymys {
         this.vastaus = vastaus;
     }
 
-    @Override
-    public String toString() {
-        return "Kysymys [kysymys_id=" + kysymys_id + ", kysymystyyppi=" + kysymystyyppi + ", kysymysteksti=" + kysymysteksti
-                + ", vastaus=" + vastaus + "]";
-    }
 }

@@ -53,11 +53,5 @@ public class Kysely {
     public void setKysymykset(List<Kysymys> kysymykset) {
         this.kysymykset = kysymykset;
     }
-
-    @Override
-    public String toString() {
-        return "Kysely [kysely_id=" + kysely_id + ", nimi=" + nimi + ", kuvaus=" + kuvaus + ", kysymykset=" + kysymykset
-                + "]";
-    }
     
 }

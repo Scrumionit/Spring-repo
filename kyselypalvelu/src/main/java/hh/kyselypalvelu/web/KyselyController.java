@@ -43,38 +43,20 @@ public class KyselyController {
         return "redirect:/kyselyt";
     }
 
-    @GetMapping("/uusikysymys")
-    public String naytaUusiKysymysLomake(Model model) {
-        model.addAttribute("kysymys", new Kysymys());
-        model.addAttribute("kyselyt", kyselyRepository.findAll());
-        return "uusikysymys";
-    }
-
-    @PostMapping("/tallennaKysymys")
-    public String tallennaKysymys(@RequestParam(required = false) Long kysely_id,
-            @RequestParam(required = false) String vastaus,
-            Kysymys kysymys) {
-
-        if (kysely_id != null) {
-            Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
-            if (kysely != null) {
-                kysymys.setKysely(kysely);
-            }
+    @PostMapping(value = "/tallennaVastaus")
+    public String tallennaVastaus(@RequestParam Long kysymys_id, @RequestParam String vastaus) {
+        Kysymys kysymys = kysymysRepository.findById(kysymys_id).orElse(null);
+        if (kysymys != null) {
+            // Lisätään vastaus kysymykseen
+            kysymys.getVastaus().add(vastaus);
+            kysymysRepository.save(kysymys);
+            Long kyselyId = kysymys.getKysely().getKysely_id();
+            return "redirect:/kysely/" + kyselyId;
         }
-
-        // pilkotaan pilkuilla erotetut vaihtoehdot listaksi
-        if (vastaus != null && !vastaus.isEmpty()) {
-            kysymys.setVastaus(Arrays.asList(vastaus.split(",")));
-        }
-
-        kysymysRepository.save(kysymys);
-
-        if (kysely_id != null) {
-            return "redirect:/kysely/" + kysely_id;
-        }
-
         return "redirect:/kyselyt";
     }
+
+
 
     @GetMapping("/kysely/{kysely_id}")
     public String naytaKysely(@PathVariable Long kysely_id, Model model) {
@@ -89,5 +71,6 @@ public class KyselyController {
 
         return "kysely";
     }
+
 
 }
