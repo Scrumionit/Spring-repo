@@ -9,16 +9,21 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Kysely {
+   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysely_id;
     private String nimi;
     private String kuvaus;
 
+    @JsonIgnoreProperties("kysely")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
     private List<Kysymys> kysymykset;
+
 
     public Kysely() {
     }

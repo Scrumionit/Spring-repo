@@ -2,6 +2,8 @@ package hh.kyselypalvelu.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +14,10 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Kysymys {
-
+    @JsonIgnoreProperties("kysymykset")
+    @ManyToOne
+    @JoinColumn(name="kysely_id")
+    private Kysely kysely;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysymys_id;
@@ -22,9 +27,7 @@ public class Kysymys {
     @ElementCollection
     private List<String> vastaus;
 
-    @ManyToOne
-    @JoinColumn(name="kysely_id")
-    private Kysely kysely;
+   
 
 
     public Kysymys() {
