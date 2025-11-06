@@ -22,7 +22,7 @@ public class Kysely {
 
     public Kysely() {
     }
-
+    //Mahdollisesti pitää lisätä "Vastaukset" muuttuja//
     public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
