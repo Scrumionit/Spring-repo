@@ -2,7 +2,7 @@ package hh.kyselypalvelu.domain;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Kysymys {
-    @JsonIgnoreProperties("kysymykset")
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="kysely_id")
     private Kysely kysely;
@@ -77,6 +77,14 @@ public class Kysymys {
 
     public void setVastaus(List<String> vastaus) {
         this.vastaus = vastaus;
+    }
+
+    public Kysely getKysely_id() {
+        return kysely;
+    }
+
+    public void setKysely_id(Kysely kysely) {
+        this.kysely = kysely;
     }
 
 }

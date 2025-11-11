@@ -9,35 +9,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
-
 @RestController
 public class KysApiController {
 
-private final KyselyRepository kyselyRepository;
-private final KysymysRepository kysymysRepository;
+    private final KyselyRepository kyselyRepository;
+    private final KysymysRepository kysymysRepository;
 
-public KysApiController(KyselyRepository kyselyRepository, KysymysRepository kysymysRepository) {
-    this.kyselyRepository = kyselyRepository;
-    this.kysymysRepository = kysymysRepository;
-}
+    public KysApiController(KyselyRepository kyselyRepository, KysymysRepository kysymysRepository) {
+        this.kyselyRepository = kyselyRepository;
+        this.kysymysRepository = kysymysRepository;
+    }
 
-@RequestMapping (value = "/api/kyselyt", method = RequestMethod.GET)
-public @ResponseBody List<Kysely> kyselyListRest() {
-    return (List<Kysely>) kyselyRepository.findAll();
-}
+    @RequestMapping(value = "/api/kyselyt", method = RequestMethod.GET)
+    public @ResponseBody List<Kysely> kyselyListRest() {
+        return (List<Kysely>) kyselyRepository.findAll();
+    }
 
-@PostMapping(value= "api/kyselyt")
-public @ResponseBody Kysely addKyselyRest(@RequestBody Kysely kysely) {
-    return kyselyRepository.save(kysely);
-}
+    @PostMapping(value = "api/kyselyt")
+    public @ResponseBody Kysely addKyselyRest(@RequestBody Kysely kysely) {
+        return kyselyRepository.save(kysely);
+    }
 
-@RequestMapping(value= "/api/kyselyt/{id}", method = RequestMethod.GET)
-public @ResponseBody Kysely findKyselyRest(@org.springframework.web.bind.annotation.PathVariable("id") Long kyselyId) {
-    return kyselyRepository.findById(kyselyId).orElse(null);
-}
+    @RequestMapping(value = "/api/kyselyt/{id}", method = RequestMethod.GET)
+    public @ResponseBody Kysely findKyselyRest(
+            @org.springframework.web.bind.annotation.PathVariable("id") Long kyselyId) {
+        return kyselyRepository.findById(kyselyId).orElse(null);
+    }
 
+    @PostMapping(value = "api/kysymykset")
+    public @ResponseBody Kysymys addKysymysRest(@RequestBody Kysymys kysymys) {
+        return kysymysRepository.save(kysymys);
+    }
 
+    @RequestMapping(value = "/api/kysymykset", method = RequestMethod.GET)
+    public @ResponseBody List<Kysymys> kysymysListRest() {
+        return (List<Kysymys>) kysymysRepository.findAll();
+    }
 
-
+    @PostMapping(value = "api/kysymykset/{kyselyId}")
+    public @ResponseBody Kysymys addKysymysToKyselyRest(@RequestBody Kysymys kysymys,
+            @org.springframework.web.bind.annotation.PathVariable("kyselyId") Long kyselyId) {
+        Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
+        if (kysely != null) {
+            kysymys.setKysely(kysely);
+            return kysymysRepository.save(kysymys);
+        } else {
+            return null; // Tai käsittele virhetilanne sopivasti
+        }
+    }
 
 }
