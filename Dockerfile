@@ -1,33 +1,16 @@
-# Build-vaihe
-FROM eclipse-temurin:17-jdk-focal AS builder
-
-WORKDIR /opt/app
-
-# Kopioi Mavenin asetukset ja projektin metadata
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x ./mvnw
-
-# Lataa riippuvuudet
-RUN ./mvnw dependency:go-offline
-
-# Kopioi lähdekoodi
-COPY ./src ./src
-
-# Buildaa projekti
-RUN ./mvnw clean install -DskipTests
-
-# Kopioi JAR-tiedosto suoraan (ei käytetä find-komentoa)
-RUN cp target/*.jar /opt/app/app.jar
-
-# Runtime-vaihe
-FROM eclipse-temurin:17-jre-alpine
-
-WORKDIR /opt/app
-
-# Kopioi buildattu JAR-tiedosto
-COPY --from=builder /opt/app/app.jar /opt/app/app.jar
-
+#
+# Mvn Build
+#
+FROM maven:3.8.6-eclipse-temurin-17-focal AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
+ 
+#
+# Jar Package
+#
+# StudentListSecureDB-0.0.1-SNAPSHOT.jar  = <artifactId>-<version>.jar (pom.xml)
+FROM eclipse-temurin:17-jre-focal
+COPY --from=build /home/app/target/kyselypalvelu-0.0.1-SNAPSHOT.jar /usr/local/lib/kyselypalvelu.jar
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "/opt/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/kyselypalvelu.jar"]
