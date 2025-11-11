@@ -30,7 +30,7 @@ public class Kysely {
     public Kysely() {
     }
     //Mahdollisesti pitää lisätä "Vastaukset" muuttuja//
-    public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset) {
+    public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset, String alkupvm, String loppupvm) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kysymykset = kysymykset;
@@ -68,6 +68,21 @@ public class Kysely {
 
     public void setKysymykset(List<Kysymys> kysymykset) {
         this.kysymykset = kysymykset;
+    }
+
+    public String getAlkupvm() {
+        return alkupvm;
+    }
+    public void setAlkupvm(String alkupvm) {
+        this.alkupvm = alkupvm;
+    }
+
+    public String getLoppupvm() {
+        return loppupvm;
+    }
+
+    public void setLoppupvm(String loppupvm) {
+        this.loppupvm = loppupvm;
     }
     
 }
