@@ -3,12 +3,16 @@
 #
 FROM eclipse-temurin:21-jdk AS build
 
-WORKDIR /home/app
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
+#Copy project files
 COPY ./kyselypalvelu/src /home/app/src
 COPY ./kyselypalvelu/pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
- 
+
+#Build project
+#RUN mvn -f /home/app/pom.xml clean package
+RUN mvn clean package -DskipTests
 #
 # Jar Package
 #
