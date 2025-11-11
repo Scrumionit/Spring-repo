@@ -37,7 +37,26 @@ public @ResponseBody Kysely findKyselyRest(@org.springframework.web.bind.annotat
     return kyselyRepository.findById(kyselyId).orElse(null);
 }
 
+@PostMapping(value= "/kysymykset")
+public @ResponseBody Kysymys addKysymysRest(@RequestBody Kysymys kysymys) {
+    return kysymysRepository.save(kysymys);
+}
 
+@RequestMapping(value= "/kysymykset", method = RequestMethod.GET)
+public @ResponseBody List<Kysymys> kysymysListRest() {
+    return (List<Kysymys>) kysymysRepository.findAll();
+}
+
+@PostMapping(value= "/{kyselyId}/kysymykset/")
+public @ResponseBody Kysymys addKysymysToKyselyRest(@PathVariable Long kyselyId, @RequestBody Kysymys kysymys) {
+    Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
+    if (kysely != null) {
+        kysymys.setKysely(kysely);
+        return kysymysRepository.save(kysymys);
+    }else {
+    return null;
+    }
+}
 
 
 
