@@ -31,6 +31,11 @@ public class KyselypalveluApplication {
 			Kysymys kysymys1 = new Kysymys("Monivalinta", "Kuinka tyytyväinen olet palveluumme?", Arrays.asList("Erittäin tyytyväinen", "Tyytyväinen", "Neutraali", "Tyytymätön", "Erittäin tyytymätön"));
 			kysymys1.setKysely(kysely1);
 			kysymysRepository.save(kysymys1);
+			
+			Kysymys kysymys3 = new Kysymys("Monivalinta", "Kuinka usein käytät tuotteitamme?", Arrays.asList("Päivittäin", "Viikoittain", "Kuukausittain", "Harvemmin"));
+			kysymys3.setKysely(kysely1);
+			kysymysRepository.save(kysymys3);
+
 			Kysymys kysymys2 = new Kysymys("Avoin", "Miten voisimme parantaa palveluamme?", null);
 			kysymys2.setKysely(kysely2);
 			kysymysRepository.save(kysymys2);
