@@ -22,17 +22,17 @@ public class KysApiController {
         this.kysymysRepository = kysymysRepository;
     }
 
-@RequestMapping (value = "/api/kyselyt", method = RequestMethod.GET)
+@RequestMapping (value = "/kyselyt", method = RequestMethod.GET)
 public @ResponseBody List<Kysely> kyselyListRest() {
     return (List<Kysely>) kyselyRepository.findAll();
 }
 
-@PostMapping(value= "api/kyselyt")
+@PostMapping(value= "/kyselyt")
 public @ResponseBody Kysely addKyselyRest(@RequestBody Kysely kysely) {
     return kyselyRepository.save(kysely);
 }
 
-@RequestMapping(value= "/api/kyselyt/{id}", method = RequestMethod.GET)
+@RequestMapping(value= "/kyselyt/{id}", method = RequestMethod.GET)
 public @ResponseBody Kysely findKyselyRest(@org.springframework.web.bind.annotation.PathVariable("id") Long kyselyId) {
     return kyselyRepository.findById(kyselyId).orElse(null);
 }
