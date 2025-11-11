@@ -1,10 +1,10 @@
 #
 # Mvn Build
 #
-FROM maven:3.8.6-eclipse-temurin-17-focal AS build
+FROM eclipse-temurin:21-jdk AS build
 COPY ./kyselypalvelu/src /home/app/src
 COPY ./kyselypalvelu/pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+RUN mvn -f -x /home/app/pom.xml clean package
  
 #
 # Jar Package
