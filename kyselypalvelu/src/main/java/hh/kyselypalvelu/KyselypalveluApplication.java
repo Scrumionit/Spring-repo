@@ -27,6 +27,13 @@ public class KyselypalveluApplication {
 			kyselyRepository.save(kysely1);
 			kyselyRepository.save(kysely2);
 			kyselyRepository.save(kysely3);
+
+			Kysymys kysymys1 = new Kysymys("Monivalinta", "Kuinka tyytyväinen olet palveluumme?", Arrays.asList("Erittäin tyytyväinen", "Tyytyväinen", "Neutraali", "Tyytymätön", "Erittäin tyytymätön"));
+			kysymys1.setKysely(kysely1);
+			kysymysRepository.save(kysymys1);
+			Kysymys kysymys2 = new Kysymys("Avoin", "Miten voisimme parantaa palveluamme?", null);
+			kysymys2.setKysely(kysely2);
+			kysymysRepository.save(kysymys2);
 		};
 	}
 }

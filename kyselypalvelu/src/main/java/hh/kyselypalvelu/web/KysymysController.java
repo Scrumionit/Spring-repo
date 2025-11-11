@@ -31,7 +31,7 @@ public class KysymysController {
         model.addAttribute("kyselyt", kyselyRepository.findAll());
         return "uusikysymys";
     }
- @PostMapping("/tallennaKysymys")
+    @PostMapping("/tallennaKysymys")
     public String tallennaKysymys(@RequestParam(required = false) Long kysely_id,
             @RequestParam(required = false) String vastaus,
             Kysymys kysymys) {

@@ -9,28 +9,28 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Kysely {
-   
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+  
     private Long kysely_id;
     private String nimi;
     private String kuvaus;
     private String alkupvm;
     private String loppupvm;
 
-    @JsonIgnoreProperties("kysely")
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
     private List<Kysymys> kysymykset;
-
 
     public Kysely() {
     }
     //Mahdollisesti pitää lisätä "Vastaukset" muuttuja//
-    public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset, String alkupvm, String loppupvm) {
+    public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kysymykset = kysymykset;
@@ -41,38 +41,33 @@ public class Kysely {
     public Long getKysely_id() {
         return kysely_id;
     }
+
     public void setKysely_id(Long kysely_id) {
         this.kysely_id = kysely_id;
     }
+
     public String getNimi() {
         return nimi;
     }
+
     public void setNimi(String nimi) {
         this.nimi = nimi;
     }
+
     public String getKuvaus() {
         return kuvaus;
     }
+
     public void setKuvaus(String kuvaus) {
         this.kuvaus = kuvaus;
     }
+
     public List<Kysymys> getKysymykset() {
         return kysymykset;
     }
+
     public void setKysymykset(List<Kysymys> kysymykset) {
         this.kysymykset = kysymykset;
     }
-    public String getAlkupvm() {
-        return alkupvm;
-    }
-    public void setAlkupvm(String alkupvm) {
-        this.alkupvm = alkupvm;
-    }
-    public String getLoppupvm() {
-        return loppupvm;
-    }
-    public void setLoppupvm(String loppupvm) {
-        this.loppupvm = loppupvm;
-    }
-
+    
 }
