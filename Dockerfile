@@ -11,8 +11,8 @@ COPY ./kyselypalvelu/src /home/app/src
 COPY ./kyselypalvelu/pom.xml /home/app
 
 #Build project
-#RUN mvn -f /home/app/pom.xml clean package
-RUN mvn clean package -DskipTests
+RUN mvn -f /home/app/pom.xml clean package
+#RUN mvn clean package -DskipTests
 #
 # Jar Package
 #
