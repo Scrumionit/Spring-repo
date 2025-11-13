@@ -6,10 +6,10 @@ import hh.kyselypalvelu.domain.Kysymys;
 import hh.kyselypalvelu.domain.KysymysRepository;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
@@ -43,11 +43,9 @@ public class KysymysController {
             }
         }
 
-
-
         // pilkotaan pilkuilla erotetut vaihtoehdot listaksi
         if (vastaus != null && !vastaus.isEmpty()) {
-            kysymys.setVastaus(Arrays.asList(vastaus.split(",")));
+            kysymys.setVastaus(new ArrayList<>(Arrays.asList(vastaus.split("\\s*,\\s*"))));
         }
 
         kysymysRepository.save(kysymys);

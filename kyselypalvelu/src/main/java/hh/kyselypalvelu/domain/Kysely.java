@@ -8,8 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 
 @Entity
 public class Kysely {
@@ -23,9 +22,8 @@ public class Kysely {
     private String alkupvm;
     private String loppupvm;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
-    private List<Kysymys> kysymykset;
+    private List<Kysymys> kysymykset = new ArrayList<>();
 
     public Kysely() {
     }
@@ -33,7 +31,7 @@ public class Kysely {
     public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset, String alkupvm, String loppupvm) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
-        this.kysymykset = kysymykset;
+        this.kysymykset = (kysymykset == null) ? new ArrayList<>() : new ArrayList<>(kysymykset);
         this.alkupvm = alkupvm;
         this.loppupvm = loppupvm;
     }
@@ -67,7 +65,7 @@ public class Kysely {
     }
 
     public void setKysymykset(List<Kysymys> kysymykset) {
-        this.kysymykset = kysymykset;
+        this.kysymykset = (kysymykset == null) ? new ArrayList<>() : new ArrayList<>(kysymykset);
     }
 
     public String getAlkupvm() {

@@ -1,6 +1,7 @@
 package hh.kyselypalvelu.domain;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,10 +26,7 @@ public class Kysymys {
     private String kysymysteksti;
 
     @ElementCollection
-    private List<String> vastaus;
-
-   
-
+    private List<String> vastaus = new ArrayList<>(); // initialize to mutable list
 
     public Kysymys() {
     }
@@ -36,7 +34,7 @@ public class Kysymys {
     public Kysymys(String kysymystyyppi, String kysymysteksti, List<String> vastaus) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
-        this.vastaus = vastaus;
+        this.vastaus = (vastaus == null) ? new ArrayList<>() : new ArrayList<>(vastaus);
     }
 
     public Kysely getKysely() {
@@ -76,15 +74,7 @@ public class Kysymys {
     }
 
     public void setVastaus(List<String> vastaus) {
-        this.vastaus = vastaus;
-    }
-
-    public Kysely getKysely_id() {
-        return kysely;
-    }
-
-    public void setKysely_id(Kysely kysely) {
-        this.kysely = kysely;
+        this.vastaus = (vastaus == null) ? new ArrayList<>() : new ArrayList<>(vastaus);
     }
 
 }

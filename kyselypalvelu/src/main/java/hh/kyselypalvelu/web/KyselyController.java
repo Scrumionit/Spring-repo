@@ -5,7 +5,8 @@ import hh.kyselypalvelu.domain.KyselyRepository;
 import hh.kyselypalvelu.domain.Kysymys;
 import hh.kyselypalvelu.domain.KysymysRepository;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,8 +48,15 @@ public class KyselyController {
     public String tallennaVastaus(@RequestParam Long kysymys_id, @RequestParam String vastaus) {
         Kysymys kysymys = kysymysRepository.findById(kysymys_id).orElse(null);
         if (kysymys != null) {
-            // Lisätään vastaus kysymykseen
-            kysymys.getVastaus().add(vastaus);
+            List<String> vastauslista = kysymys.getVastaus();
+            if (vastauslista == null) {
+                vastauslista = new ArrayList<>();
+            } else {
+                // ensure mutable list
+                vastauslista = new ArrayList<>(vastauslista);
+            }
+            vastauslista.add(vastaus);
+            kysymys.setVastaus(vastauslista);
             kysymysRepository.save(kysymys);
             Long kyselyId = kysymys.getKysely().getKysely_id();
             return "redirect:/kysely/" + kyselyId;
