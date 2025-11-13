@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api")
@@ -47,14 +48,21 @@ public @ResponseBody List<Kysymys> kysymysListRest() {
     return (List<Kysymys>) kysymysRepository.findAll();
 }
 
-@PostMapping(value= "/{kyselyId}/kysymykset/")
-public @ResponseBody Kysymys addKysymysToKyselyRest(@PathVariable Long kyselyId, @RequestBody Kysymys kysymys) {
+@RequestMapping(value = "/kyselyt/{id}/kysymykset", method = RequestMethod.GET)
+public @ResponseBody List<Kysymys> findKysymyksetForKysely(@PathVariable("id") Long id) {
+    return kyselyRepository.findById(id)
+            .map(Kysely::getKysymykset)
+            .orElse(Collections.emptyList());
+}
+
+@PostMapping(value = "/kyselyt/{id}/kysymykset")
+public @ResponseBody Kysymys addKysymysToKyselyRest(@PathVariable("id") Long kyselyId, @RequestBody Kysymys kysymys) {
     Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
     if (kysely != null) {
         kysymys.setKysely(kysely);
         return kysymysRepository.save(kysymys);
-    }else {
-    return null;
+    } else {
+        return null;
     }
 }
 
