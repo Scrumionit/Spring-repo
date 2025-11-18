@@ -1,14 +1,9 @@
 package hh.kyselypalvelu.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.List;
-import java.util.ArrayList;
+import jakarta.persistence.*;
 
 @Entity
 public class Kysely {
@@ -21,16 +16,16 @@ public class Kysely {
     private String alkupvm;
     private String loppupvm;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
-    private List<Kysymys> kysymykset = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely", fetch = FetchType.LAZY)
+    private Set<Kysymys> kysymykset = new HashSet<>();
 
     public Kysely() {
     }
     //Mahdollisesti pitää lisätä "Vastaukset" muuttuja//
-    public Kysely(String nimi, String kuvaus, List<Kysymys> kysymykset, String alkupvm, String loppupvm) {
+    public Kysely(String nimi, String kuvaus, Set<Kysymys> kysymykset, String alkupvm, String loppupvm) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
-        this.kysymykset = (kysymykset == null) ? new ArrayList<>() : new ArrayList<>(kysymykset);
+        this.kysymykset = kysymykset;
         this.alkupvm = alkupvm;
         this.loppupvm = loppupvm;
     }
@@ -59,12 +54,12 @@ public class Kysely {
         this.kuvaus = kuvaus;
     }
 
-    public List<Kysymys> getKysymykset() {
+    public Set<Kysymys> getKysymykset() {
         return kysymykset;
     }
 
-    public void setKysymykset(List<Kysymys> kysymykset) {
-        this.kysymykset = (kysymykset == null) ? new ArrayList<>() : new ArrayList<>(kysymykset);
+    public void setKysymykset(Set<Kysymys> kysymykset) {
+        this.kysymykset = kysymykset;
     }
 
     public String getAlkupvm() {
