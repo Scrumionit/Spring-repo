@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>Uusi Kysymys</title>
   <meta charset="UTF-8" />
 </head>
+
 <body>
   <h1>Uusi Kysymys</h1>
 
@@ -11,27 +13,29 @@
 
     <label for="kysely">Kysely:</label>
     <select id="kysely" name="kysely_id" class="form-control">
-      <option th:each="kysely : ${kyselyt}"
-              th:value="${kysely.kysely_id}"
-              th:text="${kysely.nimi}">
+      <option th:each="kysely : ${kyselyt}" th:value="${kysely.kysely_id}" th:text="${kysely.nimi}">
       </option>
     </select>
     <br />
 
     <label for="kysymystyyppi">Kysymystyyppi:</label>
-    <input type="text" id="kysymystyyppi" th:field="*{kysymystyyppi}" />
     <br />
-
+    <select id="kysymystyyppi" name="kysymystyyppi" class="form-control">
+      <option value="Avoin">Avoin</option>
+      <option value="Monivalinta">Monivalinta</option>
+    </select>
+    <br />
     <label for="kysymysteksti">Kysymys:</label>
-    <input type="text" id="kysymysteksti" th:field="*{kysymysteksti}" />
     <br />
-
+    <textarea rows="3" cols="30" id="kysymysteksti" th:field="*{kysymysteksti}"></textarea>
+    <br />
     <label for="vastaus">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
+    <br />
     <input type="text" id="vastaus" th:field="*{vastaus}" />
     <br />
-
     <input type="submit" value="Tallenna Kysymys" />
   </form>
 
 </body>
+
 </html>

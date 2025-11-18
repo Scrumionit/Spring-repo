@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Kyselyt</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" />
-  </head>
 
-  <body>
-    <h1>Kyselyt</h1>
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Nimi</th>
-          <th>Kuvaus</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="kysely : ${kyselyt}">
-          <td th:text="${kysely.nimi}">Nimi</td>
-          <td th:text="${kysely.kuvaus}">Kuvaus</td>
-          <td>
-            <!-- Nappi joka avaa kyselyn -->
-            <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Avaa</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
 
-    <a href="/uusikysely" class="btn btn-success">Lisää Kysely</a>
-  </body>
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+  <title>Kyselyt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>Kyselyt</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nimi</th>
+        <th>Kuvaus</th>
+        <th>Alkupvm</th>
+        <th>Loppupvm</th>
+        <th>Toiminnot</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="kysely : ${kyselyt}">
+        <td th:text="${kysely.nimi}">Nimi</td>
+        <td th:text="${kysely.kuvaus}">Kuvaus</td>
+        <td th:text="${kysely.alkupvm}">Alkupvm</td>
+        <td th:text="${kysely.loppupvm}">Loppupvm</td>
+        <td>
+          <!-- Nappi joka avaa kyselyn -->
+          <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Avaa</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <a href="/uusikysely" class="btn btn-success">Lisää Kysely</a>
+</body>
+
 </html>
