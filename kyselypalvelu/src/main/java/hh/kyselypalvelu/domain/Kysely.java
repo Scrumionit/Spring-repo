@@ -15,7 +15,6 @@ public class Kysely {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-  
     private Long kysely_id;
     private String nimi;
     private String kuvaus;
