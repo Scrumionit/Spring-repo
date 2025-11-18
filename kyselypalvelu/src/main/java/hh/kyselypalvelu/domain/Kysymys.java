@@ -1,23 +1,15 @@
 package hh.kyselypalvelu.domain;
 
-import java.util.List;
-import java.util.ArrayList;
-
+import java.util.Set;
+import java.util.HashSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Kysymys {
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="kysely_id")
+    @JoinColumn(name = "kysely_id", nullable = false)
     private Kysely kysely;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,16 +17,22 @@ public class Kysymys {
     private String kysymystyyppi;
     private String kysymysteksti;
 
-    @ElementCollection
-    private List<String> vastaus = new ArrayList<>(); // initialize to mutable list
+    @OneToMany(mappedBy = "kysymys", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Vastaus> vastaukset = new HashSet<>();
 
     public Kysymys() {
     }
-    
-    public Kysymys(String kysymystyyppi, String kysymysteksti, List<String> vastaus) {
+
+    public Kysymys(String kysymystyyppi, String kysymysteksti) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
-        this.vastaus = (vastaus == null) ? new ArrayList<>() : new ArrayList<>(vastaus);
+        this.vastaukset = new HashSet<>();
+    }
+
+    public Kysymys(String kysymystyyppi, String kysymysteksti, Set<Vastaus> vastaukset) {
+        this.kysymystyyppi = kysymystyyppi;
+        this.kysymysteksti = kysymysteksti;
+        this.vastaukset = (vastaukset != null) ? vastaukset : new HashSet<>();
     }
 
     public Kysely getKysely() {
@@ -69,12 +67,12 @@ public class Kysymys {
         this.kysymysteksti = kysymysteksti;
     }
 
-    public List<String> getVastaus() {
-        return vastaus;
+    public Set<Vastaus> getVastaukset() {
+        return vastaukset;
     }
 
-    public void setVastaus(List<String> vastaus) {
-        this.vastaus = (vastaus == null) ? new ArrayList<>() : new ArrayList<>(vastaus);
+    public void setVastaus(Set<Vastaus> vastaukset) {
+        this.vastaukset = vastaukset;
     }
 
 }

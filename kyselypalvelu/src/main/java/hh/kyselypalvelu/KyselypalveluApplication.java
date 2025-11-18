@@ -61,7 +61,7 @@ public class KyselypalveluApplication {
 					"Kysely opiskelijoiden henkisestä ja fyysisestä hyvinvoinnista", null, "2025-11-13", "2025-12-31");
 			kyselyRepository.save(kysely1);
 
-			Kysymys kysymys1 = new Kysymys("Avoin", "Kuinka hyvin nukuit?", Arrays.asList(""));
+			Kysymys kysymys1 = new Kysymys("Avoin", "Kuinka hyvin nukuit?");
 			kysymys1.setKysely(kysely1);
 			kysymysRepository.save(kysymys1);
 
