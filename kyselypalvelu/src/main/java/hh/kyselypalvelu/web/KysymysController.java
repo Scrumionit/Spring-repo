@@ -4,9 +4,11 @@ import hh.kyselypalvelu.domain.Kysely;
 import hh.kyselypalvelu.domain.KyselyRepository;
 import hh.kyselypalvelu.domain.Kysymys;
 import hh.kyselypalvelu.domain.KysymysRepository;
+import hh.kyselypalvelu.domain.Vastaus;
 
 import java.util.Arrays;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +29,7 @@ public class KysymysController {
         this.kysymysRepository = kysymysRepository;
     }
 
-      @GetMapping("/uusikysymys")
+    @GetMapping("/uusikysymys")
     public String naytaUusiKysymysLomake(Model model) {
         model.addAttribute("kysymys", new Kysymys());
         model.addAttribute("kyselyt", kyselyRepository.findAll());
@@ -45,9 +47,20 @@ public class KysymysController {
             }
         }
 
-        // pilkotaan pilkuilla erotetut vaihtoehdot listaksi
+        // parse comma-separated answer options into Vastaus entities
         if (vastaus != null && !vastaus.isEmpty()) {
-            kysymys.setVastaus(new ArrayList<>(Arrays.asList(vastaus.split("\\s*,\\s*"))));
+            // ensure set exists
+            if (kysymys.getVastaukset() == null) {
+                kysymys.setVastaus(new HashSet<>()); // entity setter name setVastaus(...)
+            }
+            Arrays.asList(vastaus.split("\\s*,\\s*"))
+                .stream()
+                .filter(s -> !s.isEmpty())
+                .forEach(s -> {
+                    Vastaus v = new Vastaus(s);
+                    v.setKysymys(kysymys);
+                    kysymys.getVastaukset().add(v);
+                });
         }
 
         kysymysRepository.save(kysymys);

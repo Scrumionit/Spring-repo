@@ -4,9 +4,10 @@ import hh.kyselypalvelu.domain.Kysely;
 import hh.kyselypalvelu.domain.KyselyRepository;
 import hh.kyselypalvelu.domain.Kysymys;
 import hh.kyselypalvelu.domain.KysymysRepository;
+import hh.kyselypalvelu.domain.Vastaus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,15 +51,17 @@ public class KyselyController {
     public String tallennaVastaus(@RequestParam Long kysymys_id, @RequestParam String vastaus) {
         Kysymys kysymys = kysymysRepository.findById(kysymys_id).orElse(null);
         if (kysymys != null) {
-            List<String> vastauslista = kysymys.getVastaus();
-            if (vastauslista == null) {
-                vastauslista = new ArrayList<>();
-            } else {
-                // ensure mutable list
-                vastauslista = new ArrayList<>(vastauslista);
+            // work with Set<Vastaus>
+            Set<Vastaus> vastausSet = kysymys.getVastaukset();
+            if (vastausSet == null) {
+                vastausSet = new HashSet<>();
+                kysymys.setVastaus(vastausSet); // entity has setter named setVastaus(...)
             }
-            vastauslista.add(vastaus);
-            kysymys.setVastaus(vastauslista);
+
+            Vastaus v = new Vastaus(vastaus);
+            v.setKysymys(kysymys);
+            vastausSet.add(v);
+
             kysymysRepository.save(kysymys);
             Long kyselyId = kysymys.getKysely().getKysely_id();
             return "redirect:/kysely/" + kyselyId;

@@ -22,11 +22,17 @@ public class Kysymys {
 
     public Kysymys() {
     }
-    
+
+    public Kysymys(String kysymystyyppi, String kysymysteksti) {
+        this.kysymystyyppi = kysymystyyppi;
+        this.kysymysteksti = kysymysteksti;
+        this.vastaukset = new HashSet<>();
+    }
+
     public Kysymys(String kysymystyyppi, String kysymysteksti, Set<Vastaus> vastaukset) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
-        this.vastaukset = vastaukset;
+        this.vastaukset = (vastaukset != null) ? vastaukset : new HashSet<>();
     }
 
     public Kysely getKysely() {
