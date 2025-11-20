@@ -12,10 +12,12 @@ public class VastausRestController {
 
     private final VastausRepository vastausRepository;
     private final KysymysRepository kysymysRepository;
+    private final KyselyRepository kyselyRepository;
 
-    public VastausRestController(VastausRepository vastausRepository, KysymysRepository kysymysRepository) {
+    public VastausRestController(VastausRepository vastausRepository, KysymysRepository kysymysRepository, KyselyRepository kyselyRepository) {
         this.vastausRepository = vastausRepository;
         this.kysymysRepository = kysymysRepository;
+        this.kyselyRepository = kyselyRepository;
     }
 
     // Ei testattu
@@ -52,9 +54,11 @@ public class VastausRestController {
 
     // Löytää tietyn kyselyn vastaukset – Ei testattu
     @GetMapping(value = "/kyselyt/{kysely_id}/vastaukset")
-    public List<Vastaus> naytaVastauksetForKysely(@PathVariable("kysely_id") Long kysely_id) {
-        return kysymysRepository.findById(kysely_id).stream()
-                .flatMap(kysymys -> kysymys.getVastaukset().stream())
-                .toList();
-    }
+        public List<Vastaus> naytaVastauksetForKysely(@PathVariable("kysely_id") Long kysely_id) {
+        return kyselyRepository.findById(kysely_id)
+            .map(kysely -> kysely.getKysymykset().stream()
+                .flatMap(k -> k.getVastaukset().stream())
+                .toList())
+            .orElse(List.of());
+        }
 }
