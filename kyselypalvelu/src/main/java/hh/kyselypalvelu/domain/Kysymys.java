@@ -14,6 +14,9 @@ public class Kysymys {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysymys_id;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "kysymystyyppi_id", nullable = false)
     private KysymysTyyppi kysymystyyppi;
     private String kysymysteksti;
 
@@ -82,6 +85,7 @@ public class Kysymys {
         return vaihtoehdot; 
     }
 
-    public void setVaihtoehdot(Set<Vaihtoehto> vaihtoehdot) {   this.vaihtoehdot = vaihtoehdot;
+    public void setVaihtoehdot(Set<Vaihtoehto> vaihtoehdot) {
+        this.vaihtoehdot = vaihtoehdot;
     }
 }

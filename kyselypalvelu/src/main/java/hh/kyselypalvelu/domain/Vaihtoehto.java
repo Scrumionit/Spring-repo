@@ -14,13 +14,30 @@ public class Vaihtoehto {
     @JoinColumn(name = "kysymys_id", nullable = false)
     private Kysymys kysymys;
 
-    public Vaihtoehto() {}
-    public Vaihtoehto(String teksti) { this.teksti = teksti; }
+    public Vaihtoehto() {
+    }
 
-    public Long getVaihtoehto_id() { return vaihtoehto_id; }
-    public String getTeksti() { return teksti; }
-    public void setTeksti(String teksti) { this.teksti = teksti; }
+    public Vaihtoehto(String teksti) {
+        this.teksti = teksti;
+    }
 
-    public Kysymys getKysymys() { return kysymys; }
-    public void setKysymys(Kysymys kysymys) { this.kysymys = kysymys; }
+    public Long getVaihtoehto_id() {
+        return vaihtoehto_id;
+    }
+
+    public String getTeksti() {
+        return teksti;
+    }
+
+    public void setTeksti(String teksti) {
+        this.teksti = teksti;
+    }
+
+    public Kysymys getKysymys() {
+        return kysymys;
+    }
+
+    public void setKysymys(Kysymys kysymys) {
+        this.kysymys = kysymys;
+    }
 }

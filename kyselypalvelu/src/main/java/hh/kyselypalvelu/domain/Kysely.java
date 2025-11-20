@@ -2,7 +2,6 @@ package hh.kyselypalvelu.domain;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -76,5 +75,4 @@ public class Kysely {
     public void setLoppupvm(String loppupvm) {
         this.loppupvm = loppupvm;
     }
-    
 }
