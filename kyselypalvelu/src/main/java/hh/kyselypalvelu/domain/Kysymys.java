@@ -14,8 +14,11 @@ public class Kysymys {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long kysymys_id;
-    private String kysymystyyppi;
+    private KysymysTyyppi kysymystyyppi;
     private String kysymysteksti;
+
+    @OneToMany(mappedBy = "kysymys", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Vaihtoehto> vaihtoehdot = new HashSet<>();
 
     @OneToMany(mappedBy = "kysymys", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Vastaus> vastaukset = new HashSet<>();
@@ -23,13 +26,13 @@ public class Kysymys {
     public Kysymys() {
     }
 
-    public Kysymys(String kysymystyyppi, String kysymysteksti) {
+    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
         this.vastaukset = new HashSet<>();
     }
 
-    public Kysymys(String kysymystyyppi, String kysymysteksti, Set<Vastaus> vastaukset) {
+    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, Set<Vastaus> vastaukset) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
         this.vastaukset = (vastaukset != null) ? vastaukset : new HashSet<>();
@@ -51,11 +54,11 @@ public class Kysymys {
         this.kysymys_id = kysymys_id;
     }
 
-    public String getKysymystyyppi() {
+    public KysymysTyyppi getKysymystyyppi() {
         return kysymystyyppi;
     }
 
-    public void setKysymystyyppi(String kysymystyyppi) {
+    public void setKysymystyyppi(KysymysTyyppi kysymystyyppi) {
         this.kysymystyyppi = kysymystyyppi;
     }
 
@@ -75,4 +78,10 @@ public class Kysymys {
         this.vastaukset = vastaukset;
     }
 
+    public Set<Vaihtoehto> getVaihtoehdot() { 
+        return vaihtoehdot; 
+    }
+
+    public void setVaihtoehdot(Set<Vaihtoehto> vaihtoehdot) {   this.vaihtoehdot = vaihtoehdot;
+    }
 }

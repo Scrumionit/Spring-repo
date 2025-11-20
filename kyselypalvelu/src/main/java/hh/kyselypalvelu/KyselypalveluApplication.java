@@ -61,27 +61,27 @@ public class KyselypalveluApplication {
 			Kysely kysely1 = new Kysely("Hyvinvointikysely","Kysely opiskelijoiden henkisestä ja fyysisestä hyvinvoinnista", null, "2025-11-13", "2025-12-31");
 			kyselyRepository.save(kysely1);
 
-			Kysymys kysymys1 = new Kysymys("Avoin", "Kuinka hyvin nukuit?");
+			Kysymys kysymys1 = new Kysymys(avoin, "Kuinka hyvin nukuit?");
 			kysymys1.setKysely(kysely1);
 			kysymysRepository.save(kysymys1);
 
-			Kysymys kysymys2 = new Kysymys("Avoin", "Mitä harrastat vapaa-ajallasi ja kuinka usein?");
+			Kysymys kysymys2 = new Kysymys(avoin, "Mitä harrastat vapaa-ajallasi ja kuinka usein?");
 			kysymys2.setKysely(kysely1);
 			kysymysRepository.save(kysymys2);
 
-			Kysymys kysymys3 = new Kysymys("Avoin", "Onko viikottainen työmäärä opinnoissasi sopiva? Jos ei ole, kerro miksi ja anna ehdotuksia, kuinka tilannetta voisi parantaa.");
+			Kysymys kysymys3 = new Kysymys(avoin, "Onko viikottainen työmäärä opinnoissasi sopiva? Jos ei ole, kerro miksi ja anna ehdotuksia, kuinka tilannetta voisi parantaa.");
 			kysymys3.setKysely(kysely1);
 			kysymysRepository.save(kysymys3);
 
-			Kysymys kysymys4 = new Kysymys("Avoin", "Miten koet sosiaalisen elämäsi opiskelijana? Onko sinulla tarpeeksi aikaa ystäville ja perheelle?");
+			Kysymys kysymys4 = new Kysymys(avoin, "Miten koet sosiaalisen elämäsi opiskelijana? Onko sinulla tarpeeksi aikaa ystäville ja perheelle?");
 			kysymys4.setKysely(kysely1);
 			kysymysRepository.save(kysymys4);
 
-			Kysymys kysymys5 = new Kysymys("Avoin", "Miten arvioisit mielialaasi viimeisen kuukauden aikana? Onko sinulla ollut stressiä, ahdistusta tai muita mielialan vaihteluita?");
+			Kysymys kysymys5 = new Kysymys(avoin, "Miten arvioisit mielialaasi viimeisen kuukauden aikana? Onko sinulla ollut stressiä, ahdistusta tai muita mielialan vaihteluita?");
 			kysymys5.setKysely(kysely1);
 			kysymysRepository.save(kysymys5);
 
-			Kysymys kysymys6 = new Kysymys("Avoin", "Onko sinulla riittävästi tukea opinnoissasi, kuten opettajilta, opiskelutovereilta tai muilta tukipalveluilta?");
+			Kysymys kysymys6 = new Kysymys(avoin, "Onko sinulla riittävästi tukea opinnoissasi, kuten opettajilta, opiskelutovereilta tai muilta tukipalveluilta?");
 			kysymys6.setKysely(kysely1);
 			kysymysRepository.save(kysymys6);
 

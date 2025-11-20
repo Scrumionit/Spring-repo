@@ -19,6 +19,10 @@ public class Vastaus {
     @JoinColumn(name = "kysymys_id", nullable = false)
     private Kysymys kysymys;
 
+    @ManyToOne // valittu vaihtoehto monivalinnassa (nullable)
+    @JoinColumn(name = "vaihtoehto_id", nullable = true)
+    private Vaihtoehto vaihtoehto;
+
     public Vastaus() {
     }
 
@@ -49,5 +53,12 @@ public class Vastaus {
     public void setKysymys(Kysymys kysymys) {
         this.kysymys = kysymys;
     }
-    
+
+    public Vaihtoehto getVaihtoehto() {
+        return vaihtoehto;
+    }
+
+    public void setVaihtoehto(Vaihtoehto vaihtoehto) {
+        this.vaihtoehto = vaihtoehto;
+    }
 }
