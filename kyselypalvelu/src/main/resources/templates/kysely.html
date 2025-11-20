@@ -19,9 +19,9 @@
     </thead>
     <tbody>
       <tr th:each="kysymys : ${kysymykset}">
-        <td th:text="${kysymys.kysymystyyppi}">Tyyppi</td>
+        <td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
         <td th:text="${kysymys.kysymysteksti}">Kysymys</td>
-        <td th:text="${#strings.arrayJoin(kysymys.vastaus, ', ')}">Vaihtoehdot</td>
+        <td th:text="${#strings.arrayJoin(kysymys.vaihtoehdot, ', ')}">Vaihtoehdot</td>
       </tr>
     </tbody>
   </table>
