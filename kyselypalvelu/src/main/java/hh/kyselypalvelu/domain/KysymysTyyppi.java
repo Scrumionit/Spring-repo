@@ -3,6 +3,8 @@ package hh.kyselypalvelu.domain;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class KysymysTyyppi {
     @Id
@@ -10,6 +12,7 @@ public class KysymysTyyppi {
     private Long kysymystyyppi_id;
     private String nimi;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysymystyyppi")
     private List<Kysymys> kysymykset;
 

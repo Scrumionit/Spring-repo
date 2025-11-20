@@ -1,6 +1,7 @@
 package hh.kyselypalvelu.domain;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Vastaus {
@@ -10,6 +11,7 @@ public class Vastaus {
 
     private String vastausteksti; 
 
+    @JsonIgnore
     @ManyToOne // Monta vastausta voi kuulua yhteen kysymykseen
     @JoinColumn(name = "kysymys_id", nullable = false)
     private Kysymys kysymys;
