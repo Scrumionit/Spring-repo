@@ -2,6 +2,7 @@ package hh.kyselypalvelu.web;
 
 import hh.kyselypalvelu.domain.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.WebDataBinder;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -24,6 +25,12 @@ public class KysymysController {
         this.kysymysTyyppiRepository = kysymysTyyppiRepository;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // prevent Spring from trying to bind the "vaihtoehdot" request parameter into the Kysymys.vaihtoehdot Set
+        binder.setDisallowedFields("vaihtoehdot");
+    }
+
     @GetMapping("/uusikysymys")
     public String naytaUusiKysymysLomake(Model model) {
         model.addAttribute("kysymys", new Kysymys());
@@ -37,27 +44,43 @@ public class KysymysController {
             @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot,
             Kysymys kysymys) {
 
+        // Tarkista löytyykö kysely
         if (kysely_id != null) {
             Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
+            // Yhdistä kysymys kyselyyn. Tarkista samalla, onko siellä jo kysymyksiä. Jos ei, luo uusi HashSet.
             if (kysely != null) {
                 kysymys.setKysely(kysely);
                 if (kysely.getKysymykset() == null) {
                     kysely.setKysymykset(new HashSet<>());
                 }
+                // Lisää kysymys kyselyyn, jos kysymyksiä oli jo olemassa.
                 kysely.getKysymykset().add(kysymys);
             }
         }
 
+        // Jos vaihtoehtoja ON ja ei pelkkää välilyöntiä
         if (vaihtoehdot != null && !vaihtoehdot.trim().isEmpty()) {
+
+            // Jos ei vaihtoehtoja, luo tyhjä HashSet.
             if (kysymys.getVaihtoehdot() == null) {
                 kysymys.setVaihtoehdot(new HashSet<>());
             }
+            // Jaa split-metodilla vaihtoehdot (String, esim. "a, b, c") pilkulla listaan -> ["a", "b", "c"]
             Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))
                 .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .forEach(s -> {
-                    Vaihtoehto vo = new Vaihtoehto(s);
+
+                // Lisää jokaisen elementin, joka ei ole tyhjä
+                .filter(yksivaihtoehto -> !yksivaihtoehto.isEmpty())
+
+                // Jokaiselle eri elementille esim. ["a", "b", "c"] tekee uuden olion vo. 
+                .forEach(yksivaihtoehto -> {
+                    Vaihtoehto vo = new Vaihtoehto();
+
+                    // Asettaa yhden elementin, esim. "a" tekstiksi a, kysymykseksi kysymyksen. 
+                    vo.setTeksti((String) yksivaihtoehto);
                     vo.setKysymys(kysymys);
+
+                    // Lisää yksi elementti, esim. "a" kysymyksen vaihtoehtolistaan.
                     kysymys.getVaihtoehdot().add(vo);
                 });
         }

@@ -78,7 +78,7 @@ public class Kysymys {
         return vastaukset;
     }
 
-    public void setVastaukset(Set<Vastaus> vastaukset) {
+    public void setVastaus(Set<Vastaus> vastaukset) {
         this.vastaukset = vastaukset;
     }
 
