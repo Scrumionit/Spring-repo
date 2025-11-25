@@ -2,6 +2,7 @@ package hh.kyselypalvelu.domain;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Vastaus {
@@ -57,5 +58,11 @@ public class Vastaus {
 
     public void setVaihtoehto(Vaihtoehto vaihtoehto) {
         this.vaihtoehto = vaihtoehto;
+    }
+
+    // näytä kysymys_id JSON-ominaisuutena
+    @JsonProperty("kysymys_id")
+    public Long getKysymysId() {
+        return (kysymys != null) ? kysymys.getKysymys_id() : null;
     }
 }
