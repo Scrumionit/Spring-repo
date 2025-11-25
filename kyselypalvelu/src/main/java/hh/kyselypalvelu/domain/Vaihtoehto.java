@@ -1,5 +1,7 @@
 package hh.kyselypalvelu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Vaihtoehto {
 
     private String teksti;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "kysymys_id", nullable = false)
     private Kysymys kysymys;

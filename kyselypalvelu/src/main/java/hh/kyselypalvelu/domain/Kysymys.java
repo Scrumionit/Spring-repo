@@ -35,9 +35,10 @@ public class Kysymys {
         this.vastaukset = new HashSet<>();
     }
 
-    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, Set<Vastaus> vastaukset) {
+    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, Set<Vaihtoehto> vaihtoehdot, Set<Vastaus> vastaukset) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
+        this.vaihtoehdot = vaihtoehdot;
         this.vastaukset = (vastaukset != null) ? vastaukset : new HashSet<>();
     }
 
@@ -77,7 +78,7 @@ public class Kysymys {
         return vastaukset;
     }
 
-    public void setVastaus(Set<Vastaus> vastaukset) {
+    public void setVastaukset(Set<Vastaus> vastaukset) {
         this.vastaukset = vastaukset;
     }
 

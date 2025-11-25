@@ -21,7 +21,12 @@
       <tr th:each="kysymys : ${kysymykset}">
         <td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
         <td th:text="${kysymys.kysymysteksti}">Kysymys</td>
-        <td th:text="${#strings.arrayJoin(kysymys.vaihtoehdot, ', ')}">Vaihtoehdot</td>
+        <td>
+          <span th:if="${#lists.isEmpty(kysymys.vaihtoehdot)}">-</span>
+          <span th:if="${!#lists.isEmpty(kysymys.vaihtoehdot)}" th:each="vo,iter : ${kysymys.vaihtoehdot}">
+            <span th:text="${vo.teksti}">vaihtoehto</span><span th:if="${!iter.last}">, </span>
+          </span>
+        </td>
       </tr>
     </tbody>
   </table>
