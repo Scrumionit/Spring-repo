@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.WebDataBinder;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.springframework.stereotype.Controller;
@@ -61,9 +61,9 @@ public class KysymysController {
         // Jos vaihtoehtoja ON ja ei pelkkää välilyöntiä
         if (vaihtoehdot != null && !vaihtoehdot.trim().isEmpty()) {
 
-            // Jos ei vaihtoehtoja, luo tyhjä HashSet.
+            // Jos ei vaihtoehtoja, luo tyhjä ArrayList.
             if (kysymys.getVaihtoehdot() == null) {
-                kysymys.setVaihtoehdot(new HashSet<>());
+                kysymys.setVaihtoehdot(new ArrayList<>());
             }
             // Jaa split-metodilla vaihtoehdot (String, esim. "a, b, c") pilkulla listaan -> ["a", "b", "c"]
             Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))

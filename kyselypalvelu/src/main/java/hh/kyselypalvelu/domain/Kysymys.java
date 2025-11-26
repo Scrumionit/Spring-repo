@@ -2,6 +2,8 @@ package hh.kyselypalvelu.domain;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -21,7 +23,8 @@ public class Kysymys {
     private String kysymysteksti;
 
     @OneToMany(mappedBy = "kysymys", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Vaihtoehto> vaihtoehdot = new HashSet<>();
+    @OrderColumn(name = "jarjestys")
+    private List<Vaihtoehto> vaihtoehdot = new ArrayList<>();
 
     @OneToMany(mappedBy = "kysymys", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Vastaus> vastaukset = new HashSet<>();
@@ -35,10 +38,10 @@ public class Kysymys {
         this.vastaukset = new HashSet<>();
     }
 
-    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, Set<Vaihtoehto> vaihtoehdot, Set<Vastaus> vastaukset) {
+    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, List<Vaihtoehto> vaihtoehdot, Set<Vastaus> vastaukset) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
-        this.vaihtoehdot = vaihtoehdot;
+        this.vaihtoehdot = (vaihtoehdot != null) ? vaihtoehdot : new ArrayList<>();
         this.vastaukset = (vastaukset != null) ? vastaukset : new HashSet<>();
     }
 
@@ -82,11 +85,11 @@ public class Kysymys {
         this.vastaukset = vastaukset;
     }
 
-    public Set<Vaihtoehto> getVaihtoehdot() { 
-        return vaihtoehdot; 
+    public List<Vaihtoehto> getVaihtoehdot() {
+        return vaihtoehdot;
     }
 
-    public void setVaihtoehdot(Set<Vaihtoehto> vaihtoehdot) {
+    public void setVaihtoehdot(List<Vaihtoehto> vaihtoehdot) {
         this.vaihtoehdot = vaihtoehdot;
     }
 }
