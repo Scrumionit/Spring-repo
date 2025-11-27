@@ -32,9 +32,30 @@
     <br />
     <textarea rows="3" cols="30" id="kysymysteksti" th:field="*{kysymysteksti}"></textarea>
     <br />
-    <label for="vaihtoehdot">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
+    <!--
+  <label for="vaihtoehdot">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
     <br />
     <input type="text" id="vaihtoehdot" th:field="*{vaihtoehdot}" />
+    <br />
+    -->
+    <div id="vaihtoehdotBlock" th:attr="style=${kysymys.kysymystyyppi == null or kysymys.kysymystyyppi.nimi != 'Avoin'} ? '' : 'display:none;'">
+      <label for="vaihtoehdot">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
+      <br />
+      <input type="text" id="vaihtoehdot" th:field="*{vaihtoehdot}" />
+    </div>
+       <script>
+      (function () {
+        const select = document.getElementById('kysymystyyppi');
+        const block = document.getElementById('vaihtoehdotBlock');
+        if (!select || !block) return;
+        function toggle() {
+          const text = select.options[select.selectedIndex].text.trim().toLowerCase();
+          block.style.display = (text === 'avoin') ? 'none' : '';
+        }
+        select.addEventListener('change', toggle);
+        document.addEventListener('DOMContentLoaded', toggle);
+      })();
+    </script>
     <br />
     <input type="submit" value="Tallenna Kysymys" />
   </form>
