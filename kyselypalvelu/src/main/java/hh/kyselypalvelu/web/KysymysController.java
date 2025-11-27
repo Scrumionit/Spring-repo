@@ -41,8 +41,8 @@ public class KysymysController {
         }
         return "uusikysymys";
     }
-
-   @PostMapping("/tallennaKysymys")
+/*
+   @PostMapping("/kysely/{kysely_id}/tallennakysymys")
     public String tallennaKysymys(
             @RequestParam(required = false) Long kysely_id,
             @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot,
@@ -99,6 +99,67 @@ public class KysymysController {
             return "redirect:/kysely/" + kysely_id;
         }
 
-        return "redirect:/kyselyt";
+        return "redirect:/kysely" + kysely_id;
     }
+        */
+
+   // ...existing code...
+   @PostMapping("/kysely/{kyselyId}/tallennakysymys")
+    public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId,
+                                  @ModelAttribute Kysymys kysymys,
+                                  @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot) {
+        // ...existing code...
+        Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
+        if (kysely == null) {
+            return "redirect:/kysely"; // tai käsittele virhe sopivasti
+        }
+
+        // linkitä kysymys kyselyyn ja varmista kysymykset-set
+        kysymys.setKysely(kysely);
+        if (kysely.getKysymykset() == null) {
+            kysely.setKysymykset(new HashSet<>());
+        }
+
+        // Selvitä onko valittu tyyppi monivalinta (haetaan tyyppi repo:sta varmistaen nimi/ID)
+        boolean onMonivalinta = false;
+        if (kysymys.getKysymystyyppi() != null && kysymys.getKysymystyyppi().getKysymystyyppi_id() != null) {
+            KysymysTyyppi tyyppi = kysymysTyyppiRepository.findById(kysymys.getKysymystyyppi().getKysymystyyppi_id()).orElse(null);
+            if (tyyppi != null) {
+                kysymys.setKysymystyyppi(tyyppi);
+                if ("MONIVALINTA".equalsIgnoreCase(tyyppi.getNimi())) {
+                    onMonivalinta = true;
+                }
+            }
+        }
+
+        // Käsittele vaihtoehdot vain jos monivalinta
+        if (onMonivalinta && vaihtoehdot != null && !vaihtoehdot.trim().isEmpty()) {
+            if (kysymys.getVaihtoehdot() == null) {
+                kysymys.setVaihtoehdot(new ArrayList<>());
+            } else {
+                kysymys.getVaihtoehdot().clear();
+            }
+            Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))
+                  .map(String::trim)
+                  .filter(s -> !s.isEmpty())
+                  .forEach(s -> {
+                      Vaihtoehto vo = new Vaihtoehto();
+                      vo.setTeksti(s);
+                      vo.setKysymys(kysymys);
+                      kysymys.getVaihtoehdot().add(vo);
+                  });
+        } else {
+            // ei monivalintaa -> poista vaihtoehdot
+            kysymys.setVaihtoehdot(null);
+        }
+
+        // Tallenna kysymys ja päivitä kysely
+        kysymysRepository.save(kysymys);
+        kysely.getKysymykset().add(kysymys);
+        kyselyRepository.save(kysely);
+
+        return "redirect:/kysely/" + kyselyId;
+    
+    }
+
 }

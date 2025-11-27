@@ -11,13 +11,16 @@
    <br>
   <h1>Uusi Kysymys</h1>
 
-  <form th:object="${kysymys}" th:action="@{/tallennaKysymys}" method="post">
+ <form th:object="${kysymys}" th:action="@{/kysely/{kyselyId}/tallennakysymys(kyselyId=${kysely.kysely_id})}" method="post">
 
     <label for="kysely">Kysely:</label>
+    <input type="hidden" name="kyselyId" th:value="${kysely.kysely_id}" readonly="readonly" />
+    <!--
     <select id="kysely" name="kysely_id" class="form-control">
       <option th:each="kysely : ${kyselyt}" th:value="${kysely.kysely_id}" th:text="${kysely.nimi}">
       </option>
     </select>
+    -->
     <br />
 
     <label for="kysymystyyppi">Kysymystyyppi:</label>
