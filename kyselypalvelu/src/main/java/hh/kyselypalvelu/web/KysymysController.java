@@ -41,69 +41,7 @@ public class KysymysController {
         }
         return "uusikysymys";
     }
-/*
-   @PostMapping("/kysely/{kysely_id}/tallennakysymys")
-    public String tallennaKysymys(
-            @RequestParam(required = false) Long kysely_id,
-            @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot,
-            Kysymys kysymys) {
 
-        // Tarkista löytyykö kysely
-        if (kysely_id != null) {
-            Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
-            // Yhdistä kysymys kyselyyn. Tarkista samalla, onko siellä jo kysymyksiä. Jos ei, luo uusi HashSet.
-            if (kysely != null) {
-                kysymys.setKysely(kysely);
-                if (kysely.getKysymykset() == null) {
-                    kysely.setKysymykset(new HashSet<>());
-                }
-                // Lisää kysymys kyselyyn, jos kysymyksiä oli jo olemassa.
-                kysely.getKysymykset().add(kysymys);
-            }
-        }
-
-        // Jos vaihtoehtoja ON ja ei pelkkää välilyöntiä
-        if (vaihtoehdot != null && !vaihtoehdot.trim().isEmpty()) {
-
-            // Jos ei vaihtoehtoja, luo tyhjä ArrayList.
-            if (kysymys.getVaihtoehdot() == null) {
-                kysymys.setVaihtoehdot(new ArrayList<>());
-            }
-            // Jaa split-metodilla vaihtoehdot (String, esim. "a, b, c") pilkulla listaan -> ["a", "b", "c"]
-            Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))
-                .map(String::trim)
-
-                // Lisää jokaisen elementin, joka ei ole tyhjä
-                .filter(yksivaihtoehto -> !yksivaihtoehto.isEmpty())
-
-                // Jokaiselle eri elementille esim. ["a", "b", "c"] tekee uuden olion vo. 
-                .forEach(yksivaihtoehto -> {
-                    Vaihtoehto vo = new Vaihtoehto();
-
-                    // Asettaa yhden elementin, esim. "a" tekstiksi a, kysymykseksi kysymyksen. 
-                    vo.setTeksti((String) yksivaihtoehto);
-                    vo.setKysymys(kysymys);
-
-                    // Lisää yksi elementti, esim. "a" kysymyksen vaihtoehtolistaan.
-                    kysymys.getVaihtoehdot().add(vo);
-                });
-        }
-
-        kysymysRepository.save(kysymys);
-
-        if (kysely_id != null) {
-            Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
-            if (kysely != null) {
-                kyselyRepository.save(kysely);
-            }
-            return "redirect:/kysely/" + kysely_id;
-        }
-
-        return "redirect:/kysely" + kysely_id;
-    }
-        */
-
-   // ...existing code...
    @PostMapping("/kysely/{kyselyId}/tallennakysymys")
     public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId,
                                   @ModelAttribute Kysymys kysymys,
