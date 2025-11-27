@@ -7,6 +7,8 @@
 </head>
 
 <body>
+   <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Takaisin kyselyyn</a>
+   <br>
   <h1>Uusi Kysymys</h1>
 
   <form th:object="${kysymys}" th:action="@{/tallennaKysymys}" method="post">

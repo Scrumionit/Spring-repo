@@ -32,7 +32,7 @@
   </table>
 
   <br />
-  <a th:href="@{/uusikysymys}" class="btn btn-primary">Lisää uusi kysymys</a>
+ <a th:href="@{/kysely/{id}/uusikysymys(id=${kysely.kysely_id})}" class="btn btn-primary">Lisää uusi kysymys</a>
   <br/>
   <a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
 </body>

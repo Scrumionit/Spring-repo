@@ -31,14 +31,18 @@ public class KysymysController {
         binder.setDisallowedFields("vaihtoehdot");
     }
 
-    @GetMapping("/uusikysymys")
-    public String naytaUusiKysymysLomake(Model model) {
+    @GetMapping("/kysely/{kysely_id}/uusikysymys")
+    public String uusiKysymys(@PathVariable Long kysely_id, Model model) {
         model.addAttribute("kysymys", new Kysymys());
-        model.addAttribute("kyselyt", kyselyRepository.findAll());
         model.addAttribute("kysymystyypit", kysymysTyyppiRepository.findAll());
+        model.addAttribute("kyselyt", kyselyRepository.findAll());
+        if (kysely_id != null) {
+            model.addAttribute("kysely", kyselyRepository.findById(kysely_id).orElse(null));
+        }
         return "uusikysymys";
     }
-    @PostMapping("/tallennaKysymys")
+
+   @PostMapping("/tallennaKysymys")
     public String tallennaKysymys(
             @RequestParam(required = false) Long kysely_id,
             @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot,
