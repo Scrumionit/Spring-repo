@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 @CrossOrigin(origins = "http://localhost:5173")
 @Controller
 public class KysymysController {
-
     private KyselyRepository kyselyRepository;
     private KysymysRepository kysymysRepository;
     private KysymysTyyppiRepository kysymysTyyppiRepository;
@@ -42,10 +41,8 @@ public class KysymysController {
         return "uusikysymys";
     }
 
-   @PostMapping("/kysely/{kyselyId}/tallennakysymys")
-    public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId,
-                                  @ModelAttribute Kysymys kysymys,
-                                  @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot) {
+    @PostMapping("/kysely/{kyselyId}/tallennakysymys")
+    public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId, @ModelAttribute Kysymys kysymys, @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot) {
         // ...existing code...
         Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
         if (kysely == null) {
@@ -78,14 +75,14 @@ public class KysymysController {
                 kysymys.getVaihtoehdot().clear();
             }
             Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))
-                  .map(String::trim)
-                  .filter(s -> !s.isEmpty())
-                  .forEach(s -> {
-                      Vaihtoehto vo = new Vaihtoehto();
-                      vo.setTeksti(s);
-                      vo.setKysymys(kysymys);
-                      kysymys.getVaihtoehdot().add(vo);
-                  });
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .forEach(s -> {
+                Vaihtoehto vo = new Vaihtoehto();
+                vo.setTeksti(s);
+                vo.setKysymys(kysymys);
+                kysymys.getVaihtoehdot().add(vo);
+            });
         } else {
             // ei monivalintaa -> poista vaihtoehdot
             kysymys.setVaihtoehdot(null);
@@ -97,7 +94,5 @@ public class KysymysController {
         kyselyRepository.save(kysely);
 
         return "redirect:/kysely/" + kyselyId;
-    
     }
-
 }

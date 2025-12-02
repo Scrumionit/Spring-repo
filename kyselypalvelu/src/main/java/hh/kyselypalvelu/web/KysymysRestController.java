@@ -11,7 +11,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api")
 public class KysymysRestController {
-
     private final KysymysRepository kysymysRepository;
     private final KyselyRepository kyselyRepository;
 
@@ -36,8 +35,8 @@ public class KysymysRestController {
     @GetMapping(value = "/kyselyt/{id}/kysymykset")
     public Set<Kysymys> naytaKyselynKysymyksetRest(@PathVariable("id") Long id) {
         return kyselyRepository.findById(id)
-                .map(Kysely::getKysymykset)
-                .orElse(null);
+            .map(Kysely::getKysymykset)
+            .orElse(null);
     }
 
     // Lisää kysymyksen tiettyyn kyselyyn

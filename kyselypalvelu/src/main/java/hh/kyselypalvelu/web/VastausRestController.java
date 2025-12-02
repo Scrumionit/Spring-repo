@@ -85,9 +85,9 @@ public class VastausRestController {
     @GetMapping(value = "/kyselyt/{kysely_id}/vastaukset")
     public List<Vastaus> naytaVastauksetForKysely(@PathVariable("kysely_id") Long kysely_id) {
         return kyselyRepository.findById(kysely_id)
-                .map(kysely -> kysely.getKysymykset().stream()
-                        .flatMap(k -> k.getVastaukset().stream())
-                        .toList())
-                .orElse(List.of());
+            .map(kysely -> kysely.getKysymykset().stream()
+            .flatMap(k -> k.getVastaukset().stream())
+            .toList())
+            .orElse(List.of());
     }
 }

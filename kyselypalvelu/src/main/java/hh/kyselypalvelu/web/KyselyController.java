@@ -1,26 +1,16 @@
 package hh.kyselypalvelu.web;
 
-import hh.kyselypalvelu.domain.Kysely;
-import hh.kyselypalvelu.domain.KyselyRepository;
-import hh.kyselypalvelu.domain.Kysymys;
-import hh.kyselypalvelu.domain.KysymysRepository;
-import hh.kyselypalvelu.domain.Vastaus;
+import hh.kyselypalvelu.domain.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @Controller
 public class KyselyController {
-
     private KyselyRepository kyselyRepository;
     private KysymysRepository kysymysRepository;
 
@@ -69,8 +59,6 @@ public class KyselyController {
         return "redirect:/kyselyt";
     }
 
-
-
     @GetMapping("/kysely/{kysely_id}")
     public String naytaKysely(@PathVariable Long kysely_id, Model model) {
         Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
@@ -84,6 +72,4 @@ public class KyselyController {
 
         return "kysely";
     }
-
-
 }
