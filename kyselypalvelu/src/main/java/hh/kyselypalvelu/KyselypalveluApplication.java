@@ -4,6 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.HashSet;
 import java.util.List;
 
 import hh.kyselypalvelu.domain.*;
@@ -83,6 +85,16 @@ public class KyselypalveluApplication {
 			Kysymys kysymys6 = new Kysymys(avoin, "Onko sinulla riittävästi tukea opinnoissasi, kuten opettajilta, opiskelutovereilta tai muilta tukipalveluilta?");
 			kysymys6.setKysely(kysely1);
 			kysymysRepository.save(kysymys6);
+
+			Vaihtoehto vaihtoehto1 = new Vaihtoehto("En koskaan");
+			Vaihtoehto vaihtoehto2 = new Vaihtoehto("1-2 kertaa");
+			Vaihtoehto vaihtoehto3 = new Vaihtoehto("3-4 kertaa");
+			Vaihtoehto vaihtoehto4 = new Vaihtoehto("5 tai enemmän kertaa");
+			
+
+			Kysymys kysymys7 = new Kysymys(monivalinta, "Kuinka usein harrastat liikuntaa viikossa?", List.of(vaihtoehto1, vaihtoehto2, vaihtoehto3, vaihtoehto4), new HashSet<>());
+			kysymys7.setKysely(kysely1);
+			kysymysRepository.save(kysymys7);
 
 		};
 	}
