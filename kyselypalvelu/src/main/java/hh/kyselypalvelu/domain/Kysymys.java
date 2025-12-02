@@ -38,6 +38,12 @@ public class Kysymys {
         this.vastaukset = new HashSet<>();
     }
 
+    public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, List<Vaihtoehto> vaihtoehdot) {
+        this.kysymystyyppi = kysymystyyppi;
+        this.kysymysteksti = kysymysteksti;
+        this.vastaukset = new HashSet<>();
+    }
+
     public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, List<Vaihtoehto> vaihtoehdot, Set<Vastaus> vastaukset) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
