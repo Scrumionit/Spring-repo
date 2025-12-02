@@ -7,16 +7,13 @@
 </head>
 
 <body>
-   <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Takaisin kyselyyn</a>
-   <br>
+  <a th:href="@{/kysely/{id}(id=${kysely.kysely_id})}" class="btn btn-primary">Takaisin kyselyyn</a>
+  <br>
   <h1>Uusi Kysymys</h1>
 
- <form th:object="${kysymys}" th:action="@{/kysely/{kyselyId}/tallennakysymys(kyselyId=${kysely.kysely_id})}" method="post">
+  <form th:object="${kysymys}" th:action="@{/kysely/{kyselyId}/tallennakysymys(kyselyId=${kysely.kysely_id})}" method="post">
 
-    <label for="kysely">Kysely:</label>
     <input type="hidden" name="kyselyId" th:value="${kysely.kysely_id}" readonly="readonly" />
-
-    <br />
 
     <label for="kysymystyyppi">Kysymystyyppi:</label>
             <select id="kysymystyyppi" th:field="*{kysymystyyppi.kysymystyyppi_id}" class="form-control">
@@ -41,7 +38,7 @@
       <br />
       <input type="text" id="vaihtoehdot" th:field="*{vaihtoehdot}" />
     </div>
-       <script>
+    <script>
       (function () {
         const select = document.getElementById('kysymystyyppi');
         const block = document.getElementById('vaihtoehdotBlock');
