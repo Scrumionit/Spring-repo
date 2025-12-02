@@ -41,6 +41,7 @@ public class Kysymys {
     public Kysymys(KysymysTyyppi kysymystyyppi, String kysymysteksti, List<Vaihtoehto> vaihtoehdot) {
         this.kysymystyyppi = kysymystyyppi;
         this.kysymysteksti = kysymysteksti;
+        this.vaihtoehdot = (vaihtoehdot != null) ? vaihtoehdot : new ArrayList<>();
         this.vastaukset = new HashSet<>();
     }
 
