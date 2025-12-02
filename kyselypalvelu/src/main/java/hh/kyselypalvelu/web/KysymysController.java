@@ -24,26 +24,28 @@ public class KysymysController {
         this.kysymysTyyppiRepository = kysymysTyyppiRepository;
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        // prevent Spring from trying to bind the "vaihtoehdot" request parameter into the Kysymys.vaihtoehdot Set
-        binder.setDisallowedFields("vaihtoehdot");
-    }
-
     @GetMapping("/kysely/{kysely_id}/uusikysymys")
     public String uusiKysymys(@PathVariable Long kysely_id, Model model) {
-        model.addAttribute("kysymys", new Kysymys());
+        Kysymys kysymys = new Kysymys();
+        kysymys.setVaihtoehdot(new ArrayList<>());
+        model.addAttribute("kysymys", kysymys);
         model.addAttribute("kysymystyypit", kysymysTyyppiRepository.findAll());
         model.addAttribute("kyselyt", kyselyRepository.findAll());
-        if (kysely_id != null) {
-            model.addAttribute("kysely", kyselyRepository.findById(kysely_id).orElse(null));
+
+        Kysely kysely = kyselyRepository.findById(kysely_id).orElse(null);
+        if (kysely == null) {
+            Kysely placeholder = new Kysely();
+            // set id so Thymeleaf expressions using kysely.kysely_id work
+            placeholder.setKysely_id(kysely_id);
+            model.addAttribute("kysely", placeholder);
+        } else {
+            model.addAttribute("kysely", kysely);
         }
         return "uusikysymys";
     }
 
     @PostMapping("/kysely/{kyselyId}/tallennakysymys")
-    public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId, @ModelAttribute Kysymys kysymys, @RequestParam(required = false, name = "vaihtoehdot") String vaihtoehdot) {
-        // ...existing code...
+    public String tallennaKysymys(@PathVariable("kyselyId") Long kyselyId, @ModelAttribute Kysymys kysymys) {
         Kysely kysely = kyselyRepository.findById(kyselyId).orElse(null);
         if (kysely == null) {
             return "redirect:/kysely"; // tai käsittele virhe sopivasti
@@ -68,21 +70,14 @@ public class KysymysController {
         }
 
         // Käsittele vaihtoehdot vain jos monivalinta
-        if (onMonivalinta && vaihtoehdot != null && !vaihtoehdot.trim().isEmpty()) {
-            if (kysymys.getVaihtoehdot() == null) {
-                kysymys.setVaihtoehdot(new ArrayList<>());
+        if (onMonivalinta) {
+            if (kysymys.getVaihtoehdot() == null || kysymys.getVaihtoehdot().isEmpty()) {
+                // no bound vaihtoehdot from the form -> keep null
+                kysymys.setVaihtoehdot(null);
             } else {
-                kysymys.getVaihtoehdot().clear();
+                // ensure each vaihtoehto links back to kysymys
+                kysymys.getVaihtoehdot().forEach(vo -> vo.setKysymys(kysymys));
             }
-            Arrays.stream(vaihtoehdot.split("\\s*,\\s*"))
-            .map(String::trim)
-            .filter(s -> !s.isEmpty())
-            .forEach(s -> {
-                Vaihtoehto vo = new Vaihtoehto();
-                vo.setTeksti(s);
-                vo.setKysymys(kysymys);
-                kysymys.getVaihtoehdot().add(vo);
-            });
         } else {
             // ei monivalintaa -> poista vaihtoehdot
             kysymys.setVaihtoehdot(null);

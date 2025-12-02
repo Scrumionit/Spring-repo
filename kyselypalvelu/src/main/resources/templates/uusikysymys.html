@@ -16,23 +16,18 @@
     <input type="hidden" name="kyselyId" th:value="${kysely.kysely_id}" readonly="readonly" />
 
     <label for="kysymystyyppi">Kysymystyyppi:</label>
-            <select id="kysymystyyppi" th:field="*{kysymystyyppi.kysymystyyppi_id}" class="form-control">
-                <option th:each="k: ${kysymystyypit}"
-                    th:value="${k.kysymystyyppi_id}"
-                    th:text="${k.nimi}">
-                </option>
-            </select><br>
+    <select id="kysymystyyppi" th:field="*{kysymystyyppi.kysymystyyppi_id}" class="form-control">
+        <option th:each="k: ${kysymystyypit}"
+          th:value="${k.kysymystyyppi_id}"
+          th:text="${k.nimi}">
+        </option>
+    </select><br>
     <br />
     <label for="kysymysteksti">Kysymys:</label>
     <br />
     <textarea rows="3" cols="30" id="kysymysteksti" th:field="*{kysymysteksti}"></textarea>
     <br />
     <!--
-  <label for="vaihtoehdot">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
-    <br />
-    <input type="text" id="vaihtoehdot" th:field="*{vaihtoehdot}" />
-    <br />
-    -->
     <div id="vaihtoehdotBlock" th:attr="style=${kysymys.kysymystyyppi == null or kysymys.kysymystyyppi.nimi != 'Avoin'} ? '' : 'display:none;'">
       <label for="vaihtoehdot">Vastausvaihtoehdot (pilkuilla erotettuna):</label>
       <br />
@@ -50,10 +45,100 @@
         select.addEventListener('change', toggle);
         document.addEventListener('DOMContentLoaded', toggle);
       })();
+    </script>-->
+    <div id="vaihtoehdotBlock" th:attr="style=${kysymys.kysymystyyppi == null or kysymys.kysymystyyppi.nimi != 'Avoin'} ? '' : 'display:none;'">
+      <label>Vastausvaihtoehdot:</label>
+      <div id="options">
+        <!-- render existing vaihtoehdot if any -->
+        <div th:each="v,iterStat : ${kysymys.vaihtoehdot}" class="option-row">
+          <input type="text" th:field="*{vaihtoehdot[__${iterStat.index}__].teksti}" />
+          <button type="button" class="remove-option">Poista</button>
+        </div>
+        <!-- if none, render one empty input so user can start -->
+        <div th:if="${kysymys.vaihtoehdot == null or #lists.isEmpty(kysymys.vaihtoehdot)}" class="option-row">
+          <input type="text" th:field="*{vaihtoehdot[0].teksti}" />
+          <button type="button" class="remove-option">Poista</button>
+        </div>
+      </div>
+      <button type="button" id="addOption">Lisää vaihtoehto</button>
+    </div>
+
+    <script>
+      (function () {
+        const select = document.getElementById('kysymystyyppi');
+        const block = document.getElementById('vaihtoehdotBlock');
+        const optionsContainer = document.getElementById('options');
+        const addBtn = document.getElementById('addOption');
+
+        if (!select || !block || !optionsContainer || !addBtn) return;
+
+        function toggleBlock() {
+          const text = select.options[select.selectedIndex].text.trim().toLowerCase();
+          block.style.display = (text === 'avoin') ? 'none' : '';
+        }
+
+        function updateIndices() {
+          const rows = optionsContainer.querySelectorAll('.option-row');
+          rows.forEach((row, idx) => {
+            const input = row.querySelector('input');
+            input.name = 'vaihtoehdot[' + idx + '].teksti';
+            input.id = 'vaihtoehdot_' + idx + '_teksti';
+            // keep value already present
+          });
+        }
+
+        function addOption(value) {
+          const idx = optionsContainer.querySelectorAll('.option-row').length;
+          const row = document.createElement('div');
+          row.className = 'option-row';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.name = 'vaihtoehdot[' + idx + '].teksti';
+          input.id = 'vaihtoehdot_' + idx + '_teksti';
+          if (value) input.value = value;
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'remove-option';
+          removeBtn.textContent = 'Poista';
+          removeBtn.addEventListener('click', function () {
+            row.remove();
+            updateIndices();
+          });
+          row.appendChild(input);
+          row.appendChild(removeBtn);
+          optionsContainer.appendChild(row);
+        }
+
+        // wire up existing remove buttons (rendered by Thymeleaf)
+        optionsContainer.querySelectorAll('.remove-option').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            const row = e.target.closest('.option-row');
+            if (row) {
+              row.remove();
+              updateIndices();
+            }
+          });
+        });
+
+        addBtn.addEventListener('click', function () {
+          addOption('');
+        });
+
+        // initialize block visibility and indices after DOM ready
+        document.addEventListener('DOMContentLoaded', function () {
+          toggleBlock();
+          updateIndices();
+        });
+
+        // also watch for change on select
+        select.addEventListener('change', toggleBlock);
+
+      })();
     </script>
     <br />
     <input type="submit" value="Tallenna Kysymys" />
   </form>
+  
 
 </body>
 
