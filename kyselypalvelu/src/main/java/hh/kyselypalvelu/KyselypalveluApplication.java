@@ -90,12 +90,16 @@ public class KyselypalveluApplication {
 			Vaihtoehto vaihtoehto2 = new Vaihtoehto("1-2 kertaa");
 			Vaihtoehto vaihtoehto3 = new Vaihtoehto("3-4 kertaa");
 			Vaihtoehto vaihtoehto4 = new Vaihtoehto("5 tai enemmän kertaa");
-			
 
-			Kysymys kysymys7 = new Kysymys(monivalinta, "Kuinka usein harrastat liikuntaa viikossa?", List.of(vaihtoehto1, vaihtoehto2, vaihtoehto3, vaihtoehto4), new HashSet<>());
+			Kysymys kysymys7 = new Kysymys(monivalinta, "Kuinka usein harrastat liikuntaa viikossa?");
+			kysymys7.setVaihtoehdot(List.of(vaihtoehto1, vaihtoehto2, vaihtoehto3, vaihtoehto4));
+			vaihtoehto1.setKysymys(kysymys7);
+			vaihtoehto2.setKysymys(kysymys7);
+			vaihtoehto3.setKysymys(kysymys7);
+			vaihtoehto4.setKysymys(kysymys7);
+
 			kysymys7.setKysely(kysely1);
 			kysymysRepository.save(kysymys7);
-
 		};
 	}
 }
