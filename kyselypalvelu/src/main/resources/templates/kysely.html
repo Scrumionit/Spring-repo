@@ -9,40 +9,49 @@
 </head>
 
 <body class="app">
-  <div class="card-wrapper">
-	<div class="card">
-		<h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
-		<p class="lead" th:text="${kysely.kuvaus}">Kuvaus</p>
+	<div class="card-wrapper">
+		<div class="card">
+			<h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
+			<p class="lead" th:text="${kysely.kuvaus}">Kuvaus</p>
 
-		<h2>Kysymykset</h2>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Kysymystyyppi</th>
-					<th>Kysymys</th>
-					<th>Vastausvaihtoehdot</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="kysymys : ${kysymykset}">
-					<td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
-					<td th:text="${kysymys.kysymysteksti}">Kysymys</td>
-					<td>
-						<span th:if="${#lists.isEmpty(kysymys.vaihtoehdot)}">-</span>
-						<span th:if="${!#lists.isEmpty(kysymys.vaihtoehdot)}" th:each="vo,iter : ${kysymys.vaihtoehdot}">
-							<span th:text="${vo.teksti}">vaihtoehto</span><span th:if="${!iter.last}">, </span>
-						</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			<h2>Kysymykset</h2>
 
-		<br />
-		<div class="actions">
-		  <a th:href="@{/kysely/{id}/uusikysymys(id=${kysely.kysely_id})}" class="btn btn-primary">Lisää uusi kysymys</a>
-		  <a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
+			<!-- show friendly message when there are no questions -->
+			<div th:if="${#lists.isEmpty(kysymykset)}">
+				<p>Ei vielä kysymyksiä. Lisää uusi kysymys alta.</p>
+			</div>
+
+			<!-- show the table only when there are questions -->
+			<div th:unless="${#lists.isEmpty(kysymykset)}">
+				<table class="table kysely-table">
+					<thead>
+						<tr>
+							<th>Kysymystyyppi</th>
+							<th>Kysymys</th>
+							<th>Vastausvaihtoehdot</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="kysymys : ${kysymykset}">
+							<td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
+							<td th:text="${kysymys.kysymysteksti}">Kysymys</td>
+							<td>
+								<span th:if="${#lists.isEmpty(kysymys.vaihtoehdot)}">-</span>
+								<span th:if="${!#lists.isEmpty(kysymys.vaihtoehdot)}" th:each="vo,iter : ${kysymys.vaihtoehdot}">
+									<span th:text="${vo.teksti}">vaihtoehto</span><span th:if="${!iter.last}">, </span>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<br />
+			<div class="actions">
+				<a th:href="@{/kysely/{id}/uusikysymys(id=${kysely.kysely_id})}" class="btn btn-primary">Lisää uusi kysymys</a>
+				<a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
+			</div>
 		</div>
 	</div>
-  </div>
 </body>
 </html>

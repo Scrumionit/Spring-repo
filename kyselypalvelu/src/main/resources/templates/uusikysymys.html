@@ -14,11 +14,11 @@
       <!-- removed top-level back button; it will be next to submit below -->
       <h1>Uusi kysymys</h1>
 
-      <form th:object="${kysymys}" th:action="@{/kysely/{kyselyId}/tallennakysymys(kyselyId=${kysely.kysely_id})}" method="post">
+      <form th:object="${kysymys}" th:action="@{/kysely/{kyselyId}/tallennakysymys(kyselyId=${kysely.kysely_id})}" method="post" onsubmit="return validateKysymys(this);">
         <input type="hidden" name="kyselyId" th:value="${kysely.kysely_id}" readonly="readonly" />
 
         <label for="kysymystyyppi">Kysymystyyppi:</label>
-        <select id="kysymystyyppi" th:field="*{kysymystyyppi.kysymystyyppi_id}" class="form-control">
+        <select id="kysymystyyppi" th:field="*{kysymystyyppi.kysymystyyppi_id}" class="form-control" required>
             <option th:each="k: ${kysymystyypit}"
               th:value="${k.kysymystyyppi_id}"
               th:text="${k.nimi}">
@@ -26,7 +26,7 @@
         </select>
 
         <label for="kysymysteksti">Kysymys:</label>
-        <textarea id="kysymysteksti" th:field="*{kysymysteksti}"></textarea>
+        <textarea id="kysymysteksti" th:field="*{kysymysteksti}" required></textarea>
 
         <div id="vaihtoehdotBlock" th:attr="style=${kysymys.kysymystyyppi == null or kysymys.kysymystyyppi.nimi != 'Avoin'} ? '' : 'display:none;'">
           <label>Vastausvaihtoehdot:</label>
@@ -65,7 +65,6 @@
                 const input = row.querySelector('input');
                 input.name = 'vaihtoehdot[' + idx + '].teksti';
                 input.id = 'vaihtoehdot_' + idx + '_teksti';
-                // keep value already present
               });
             }
 
@@ -114,6 +113,34 @@
 
             // also watch for change on select
             select.addEventListener('change', toggleBlock);
+
+            // expose validation for the form
+            window.validateKysymys = function (form) {
+              // basic required checks
+              const selectEl = form.querySelector('#kysymystyyppi');
+              const textEl = form.querySelector('#kysymysteksti');
+              if (!selectEl || !selectEl.value) {
+                alert('Valitse kysymystyyppi.');
+                if (selectEl) selectEl.focus();
+                return false;
+              }
+              if (!textEl || !textEl.value.trim()) {
+                alert('Kirjoita kysymysteksti.');
+                if (textEl) textEl.focus();
+                return false;
+              }
+              // if options block is visible, ensure at least one non-empty option
+              if (block && block.style.display !== 'none') {
+                const optionInputs = optionsContainer.querySelectorAll('input[type="text"]');
+                let hasValid = false;
+                optionInputs.forEach(i => { if (i.value && i.value.trim()) hasValid = true; });
+                if (!hasValid) {
+                  alert('Lisää vähintään yksi vastausvaihtoehto.');
+                  return false;
+                }
+              }
+              return true;
+            };
 
           })();
         </script>

@@ -1,9 +1,10 @@
 /* Core palette:
-   Primary Blue  : #0079c2
-   Teal Green    : #18b89e
-   Light Blue    : #8baddc
-   Bright Sky    : #00aacd
-   Accent Green  : #cad510
+  Primary Blue  : #0079c2
+  Teal Green    : #18b89e
+  Light Blue    : #8baddc
+  Bright Sky    : #00aacd
+  Accent Green  : #cad510
+  Gradient      : linear-gradient(135deg,var(--primary),var(--teal))
 */
 :root{
   --primary:#0079c2;
@@ -11,7 +12,7 @@
   --light-blue:#8baddc;
   --bright-sky:#00aacd;
   --accent-green:#cad510;
-  --bg:#f5f7fa;
+  --bg:#f5f7fa; /* white-ish background */
   --card-bg: #ffffff;
   --muted:#6b7280;
   --radius:12px;
@@ -26,8 +27,8 @@ html,body{
   height:100%;
   margin:0;
   font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  /* global background: start blue at bottom-left, end teal at top-right */
-  background: linear-gradient(to top right, var(--primary), var(--teal));
+  /* global background: switch to white-ish page background instead of gradient */
+  background: var(--bg);
   color:#111827;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -36,12 +37,14 @@ html,body{
 /* App container centers content; some pages can override to start top */
 body.app{
   display:flex;
-  align-items:center;
+  /* set default to top-aligned so all pages share the same baseline as kyselyt.html */
+  align-items:flex-start;
   justify-content:center;
-  padding:40px 20px;
+  padding:22px 20px; /* smaller top padding so cards sit near top but not flush */
   box-sizing:border-box;
 }
 body.app.start-top {
+  /* kept for backward compatibility — same behavior as default now */
   align-items:flex-start;
   padding-top:22px;
 }
@@ -82,27 +85,47 @@ body.app.start-top {
   border-radius:8px;
   font-weight:600;
   font-size:14px;
-  border:0;
+  /* ensure all buttons have the same visual thickness: 1px border by default */
+  border:1px solid transparent;
   cursor:pointer;
   transition:all .16s ease;
   box-shadow:none;
+  min-height:40px; /* keep consistent height so buttons look equally weighted */
+  box-sizing:border-box;
 }
+
+/* Primary buttons: unified teal look for all primary actions */
 .btn-primary {
-  background: var(--gradient);
+  background: linear-gradient(225deg,var(--teal),var(--bright-sky));
   color:white;
+  box-shadow: 0 8px 20px rgba(7,59,96,0.08);
+  /* match border width of .btn-secondary so thickness is identical */
+  border:1px solid rgba(24,184,158,0.14);
 }
-.btn-primary:hover { transform:translateY(-2px); box-shadow: 0 8px 20px rgba(7,59,96,0.12); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow: 0 10px 26px rgba(7,59,96,0.12); }
+
+/* ensure any existing .btn-success uses the same visual as .btn-primary */
+.btn-success {
+  /* mirror primary teal style for consistent appearance */
+  background: linear-gradient(90deg,var(--teal),var(--bright-sky));
+  color:white;
+  box-shadow: 0 8px 20px rgba(7,59,96,0.08);
+  border:1px solid rgba(24,184,158,0.14);
+}
+.btn-success:hover { transform:translateY(-2px); box-shadow: 0 10px 26px rgba(7,59,96,0.12); }
 
 .btn-secondary {
   background: transparent;
   color:var(--primary);
+  /* keep same width border as primary for identical thickness */
   border:1px solid rgba(0,121,194,0.12);
 }
 .btn-secondary:hover { background:rgba(0,121,194,0.04); }
 
-.btn-success {
-  background: linear-gradient(90deg,var(--teal),var(--bright-sky));
-  color:white;
+/* ensure input[type="submit"] with .btn uses same box-sizing/padding in all browsers */
+input.btn, input[type="submit"].btn {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* Table */
@@ -110,20 +133,55 @@ body.app.start-top {
   width:100%;
   border-collapse:collapse;
   margin-top:12px;
+  /* keep the table within its container and force cells to wrap instead of expanding the card */
+  table-layout: fixed;
 }
 .table th, .table td {
   padding:12px 10px;
   border-bottom:1px solid rgba(15,23,42,0.05);
   text-align:left;
+  /* ensure long text wraps and doesn't overflow the card */
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
-.table thead th {
-  background: linear-gradient(90deg, rgba(11,56,115,0.03), rgba(24,184,158,0.02));
-  color:var(--primary);
-  font-weight:600;
-  font-size:14px;
+
+/* column width hints so table distributes space predictably (total ~100%) */
+.table th:nth-child(1), .table td:nth-child(1) { width:20%; } /* Nimi */
+.table th:nth-child(2), .table td:nth-child(2) { width:48%; } /* Kuvaus */
+.table th:nth-child(3), .table td:nth-child(3) { width:11%; } /* Alkupvm */
+.table th:nth-child(4), .table td:nth-child(4) { width:11%; } /* Loppupvm */
+.table th:nth-child(5), .table td:nth-child(5) { width:10%; } /* Toiminnot */
+
+/* alternating row shading for better readability (listing pages) */
+.table tbody tr:nth-child(even) {
+  background-color: rgba(3,18,30,0.03); /* slightly stronger than before */
 }
-.table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(11,56,115,0.02), rgba(24,184,158,0.01));
+.table tbody tr:nth-child(odd) {
+  background-color: transparent;
+}
+
+.kysely-table {
+  table-layout: auto;
+  width: 100%;
+}
+.kysely-table th, .kysely-table td {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* column widths for the kysely page (three columns) */
+.kysely-table th:nth-child(1), .kysely-table td:nth-child(1) { width: 20%; } /* Kysymystyyppi */
+.kysely-table th:nth-child(2), .kysely-table td:nth-child(2) { width: 40%; } /* Kysymys */
+.kysely-table th:nth-child(3), .kysely-table td:nth-child(3) { width: 40%; } /* Vastausvaihtoehdot */
+
+/* alternating row shading for better readability (listing pages) */
+.kysely-table tbody tr:nth-child(even) {
+  background-color: rgba(24,184,158,0.04); /* subtle teal-tinted banding */
+}
+.kysely-table tbody tr:nth-child(odd) {
+  background-color: transparent;
 }
 
 /* Forms & spacing adjustments */
@@ -138,67 +196,105 @@ label {
   color:#0b3e73;
   line-height:1.2;
 }
+
+/* subtle gradient border with rounded corners using two-layer background.
+    - First layer is the control background (white).
+    - Second layer is the gradient used as the border (applies to border-box).
+    - Transparent 1px border allows border-box layer to show.
+    - Animation is applied only on :focus to keep resource use minimal.
+*/
+@keyframes gradientShift {
+  to { background-position: 0 0, 100% 50%; }
+}
+
+/* inputs/textareas/selects: rounded gradient border (primary -> teal) with teal fallback */
 input[type="text"], input[type="date"], textarea, select {
   width:100%;
   padding:10px 12px;
   border-radius:8px;
-  border:1px solid rgba(15,23,42,0.06);
+  /* fallback for older browsers */
+  border:1px solid var(--teal);
+  /* two-layer background: inner white, outer gradient for border */
+  background-image:
+    linear-gradient(#fff, #fff),
+    linear-gradient(90deg, var(--primary), var(--teal));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  /* make border visible via transparent border (gradient sits in border-box) */
+  border:1px solid transparent;
   box-shadow: none;
   font-size:14px;
   margin:6px 0 14px 0; /* small top margin, consistent bottom margin */
   box-sizing:border-box;
   resize:vertical;
   min-height:40px;
-}
-textarea {
-  min-height:100px; /* give room but allow vertical expansion */
-  max-height:480px;
-  overflow:auto;
+
+  /* let the gradient be wider for a smoother look when animated */
+  background-size: auto, 200% 100%;
+  background-position: 0 0, 0% 50%;
+  transition: box-shadow .16s ease, transform .12s ease;
 }
 
-/* make fields expand downwards (natural behavior) */
-input[type="text"]:not([type="date"]) {
-  overflow-wrap: break-word;
+/* focus state: subtle glow + animate the gradient border only while focused (low-cost) */
+input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus, .option-row input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(24,184,158,0.12);
+  animation: gradientShift 6s linear infinite;
 }
 
-/* select visual improvements */
+/* ensure option-row inputs get same treatment */
+.option-row input[type="text"] {
+  flex:1;
+  min-height:40px;
+  padding:10px 12px;
+  border-radius:8px;
+  /* fallback */
+  border:1px solid var(--teal);
+  background-image:
+    linear-gradient(#fff, #fff),
+    linear-gradient(90deg, var(--primary), var(--teal));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border:1px solid transparent;
+  background-size: auto, 200% 100%;
+  background-position: 0 0, 0% 50%;
+}
+
+/* select visual improvements (override previous solid border) */
 select.form-control {
   appearance:none;
   -webkit-appearance:none;
   -moz-appearance:none;
-  background-color:#fff;
+  background-color: transparent; /* inner layer already provides white */
   padding:10px 40px 10px 12px;
   border-radius:8px;
-  border:1px solid rgba(15,23,42,0.06);
+  /* two-layer gradient border + white inner */
   background-image:
-    linear-gradient(45deg, transparent 50%, rgba(0,0,0,0.45) 50%),
-    linear-gradient(135deg, rgba(0,0,0,0.45) 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
+    linear-gradient(#fff, #fff),
+    linear-gradient(90deg, var(--primary), var(--teal));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  border:1px solid transparent;
+  background-size: auto, 200% 100%;
+  background-position: 0 0, 0% 50%;
+  background-image:
+    linear-gradient(#fff, #fff),
+    linear-gradient(90deg, var(--primary), var(--teal));
   margin:6px 0 14px 0;
 }
 
 /* Small helpers and option rows */
 .option-row {
   display:flex;
-  gap:8px;
-  margin-bottom:8px;
-  align-items:center;
-}
-.option-row input[type="text"] {
-  flex:1;
-  min-height:40px;
-  padding:10px 12px;
-  border-radius:8px;
+  gap:5px;
+  align-items:baseline;
 }
 .remove-option {
   background:transparent;
   color:#ef4444;
-  border:1px solid rgba(239,68,68,0.12);
-  padding:6px 10px;
+  border:1px solid rgba(239,68,68,0.82);
   border-radius:8px;
-  display:inline-flex;
+  display:flex;
   align-items:center;
   justify-content:center;
   height:40px; /* match input height */
@@ -208,7 +304,7 @@ select.form-control {
 #addOption {
   margin-top:8px;
   background:transparent;
-  border:1px dashed rgba(0,121,194,0.14);
+  border:1px solid rgba(0,121,194,0.14);
   color:var(--primary);
   padding:8px 12px;
   border-radius:8px;

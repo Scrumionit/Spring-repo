@@ -11,25 +11,39 @@
     <div class="card-wrapper">
       <div class="card">
         <h1>Uusi kysely</h1>
-        <!-- wrap controls in one form, place actions container at the end so buttons are side-by-side -->
-        <form action="/tallennaKysely" method="post">
+        <!-- wrap controls in one form, add client-side validation -->
+        <form action="/tallennaKysely" method="post" onsubmit="return validateKysely(this);">
           <label for="nimi">Nimi</label>
-          <input type="text" name="nimi" />
+          <input type="text" name="nimi" required />
           <br/>
           <label for="kuvaus">Kuvaus</label>
-          <textarea rows="3" cols="30" name="kuvaus"></textarea>
+          <textarea rows="3" cols="30" name="kuvaus" required></textarea>
           <br/>
           <label for="alkupvm">Alkamisajankohta</label>
-          <input type="date" name ="alkupvm" />
+          <input type="date" name ="alkupvm" required />
           <br/>
           <label for="loppupvm">Päättymisajankohta</label>
-          <input type="date" name="loppupvm" />
+          <input type="date" name="loppupvm" required />
           <br/>
           <div class="actions">
             <input type="submit" value="Tallenna kysely" class="btn btn-primary" />
             <a href="/kyselyt" class="btn btn-secondary">Palaa takaisin</a>
           </div>
         </form>
+
+        <script>
+          function validateKysely(form) {
+            const requiredFields = form.querySelectorAll('input[required], textarea[required]');
+            for (let f of requiredFields) {
+              if (!f.value || !f.value.toString().trim()) {
+                alert('Täytä kaikki kentät ennen tallennusta.');
+                f.focus();
+                return false;
+              }
+            }
+            return true;
+          }
+        </script>
       </div>
     </div>
   </body>
