@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8" />
-  <title th:text="'Kysely: ' + ${kysely.nimi}"></title>
+	<meta charset="UTF-8" />
+	<title th:text="'Kysely: ' + ${kysely.nimi}"></title>
+	<!-- added stylesheet -->
+	<link rel="stylesheet" href="/index.css" />
 </head>
-<body>
-  <h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
-  <p th:text="${kysely.kuvaus}">Kuvaus</p>
 
-  <h2>Kysymykset</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Kysymystyyppi</th>
-        <th>Kysymys</th>
-        <th>Vastausvaihtoehdot</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="kysymys : ${kysymykset}">
-        <td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
-        <td th:text="${kysymys.kysymysteksti}">Kysymys</td>
-        <td>
-          <span th:if="${#lists.isEmpty(kysymys.vaihtoehdot)}">-</span>
-          <span th:if="${!#lists.isEmpty(kysymys.vaihtoehdot)}" th:each="vo,iter : ${kysymys.vaihtoehdot}">
-            <span th:text="${vo.teksti}">vaihtoehto</span><span th:if="${!iter.last}">, </span>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<body class="app">
+  <div class="card-wrapper">
+	<div class="card">
+		<h1 th:text="${kysely.nimi}">Kyselyn nimi</h1>
+		<p class="lead" th:text="${kysely.kuvaus}">Kuvaus</p>
 
-  <br />
- <a th:href="@{/kysely/{id}/uusikysymys(id=${kysely.kysely_id})}" class="btn btn-primary">Lisää uusi kysymys</a>
-  <br/>
-  <a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
+		<h2>Kysymykset</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Kysymystyyppi</th>
+					<th>Kysymys</th>
+					<th>Vastausvaihtoehdot</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="kysymys : ${kysymykset}">
+					<td th:text="${kysymys.kysymystyyppi.nimi}">Tyyppi</td>
+					<td th:text="${kysymys.kysymysteksti}">Kysymys</td>
+					<td>
+						<span th:if="${#lists.isEmpty(kysymys.vaihtoehdot)}">-</span>
+						<span th:if="${!#lists.isEmpty(kysymys.vaihtoehdot)}" th:each="vo,iter : ${kysymys.vaihtoehdot}">
+							<span th:text="${vo.teksti}">vaihtoehto</span><span th:if="${!iter.last}">, </span>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<br />
+		<div class="actions">
+		  <a th:href="@{/kysely/{id}/uusikysymys(id=${kysely.kysely_id})}" class="btn btn-primary">Lisää uusi kysymys</a>
+		  <a th:href="@{/kyselyt}" class="btn btn-secondary">Takaisin listaan</a>
+		</div>
+	</div>
+  </div>
 </body>
 </html>

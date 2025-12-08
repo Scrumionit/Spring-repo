@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Uusi Kysely</title>
+    <title>Uusi kysely</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" />
+    <!-- link to shared stylesheet -->
+    <link type="text/css" rel="stylesheet" href="/index.css" />
   </head>
 
-  <body>
-    <h1>Uusi Kysely</h1>
-    <form action="/tallennaKysely" method="post">
-      <label for="nimi">Kyselyn Nimi:</label>
-      <br/>
-      <input type="text" name="nimi" />
-      <br/>
-      <label for="kuvaus">Kyselyn Kuvaus:</label>
-      <br/>
-      <textarea rows="3" cols="30" name="kuvaus">
-      </textarea>
-      <br/>
-      <label for="alkupvm">Alkupvm</label>
-      <br/>
-      <input type="date" name ="alkupvm" />
-      <br/>
-      <label for="loppupvm">Loppupvm</label>
-      <br/>
-      <input type="date" name="loppupvm" />
-      <br/><br/>
-      <input type="submit" value="Tallenna Kysely" />
-    </form>
-
-    <a href="/kyselyt">Palaa takaisin</a>
-
+  <body class="app">
+    <div class="card-wrapper">
+      <div class="card">
+        <h1>Uusi kysely</h1>
+        <!-- wrap controls in one form, place actions container at the end so buttons are side-by-side -->
+        <form action="/tallennaKysely" method="post">
+          <label for="nimi">Nimi</label>
+          <input type="text" name="nimi" />
+          <br/>
+          <label for="kuvaus">Kuvaus</label>
+          <textarea rows="3" cols="30" name="kuvaus"></textarea>
+          <br/>
+          <label for="alkupvm">Alkamisajankohta</label>
+          <input type="date" name ="alkupvm" />
+          <br/>
+          <label for="loppupvm">Päättymisajankohta</label>
+          <input type="date" name="loppupvm" />
+          <br/>
+          <div class="actions">
+            <input type="submit" value="Tallenna kysely" class="btn btn-primary" />
+            <a href="/kyselyt" class="btn btn-secondary">Palaa takaisin</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
