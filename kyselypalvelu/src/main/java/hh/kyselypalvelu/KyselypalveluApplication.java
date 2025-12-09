@@ -53,8 +53,8 @@ public class KyselypalveluApplication {
 			kysymys3.setKysely(kysely1);
 			kysymysRepository.save(kysymys3);
 
-			Vaihtoehto vaihtoehto5 = new Vaihtoehto("Kyllä");
-			Vaihtoehto vaihtoehto6 = new Vaihtoehto("Ei");
+			Vaihtoehto vaihtoehto5 = new Vaihtoehto("Kyllä on");
+			Vaihtoehto vaihtoehto6 = new Vaihtoehto("Ei ole");
 			Vaihtoehto vaihtoehto7 = new Vaihtoehto("En osaa sanoa");
 
 			Kysymys kysymys4 = new Kysymys(monivalinta, "Onko viikottainen työmäärä opinnoissasi sopiva?");
@@ -82,7 +82,7 @@ public class KyselypalveluApplication {
 			kysymys8.setKysely(kysely1);
 			kysymysRepository.save(kysymys8);
 
-			Vaihtoehto vaihtoehto8 = new Vaihtoehto("On");
+			Vaihtoehto vaihtoehto8 = new Vaihtoehto("On paljon");
 			Vaihtoehto vaihtoehto9 = new Vaihtoehto("On tarpeeksi");
 			Vaihtoehto vaihtoehto10 = new Vaihtoehto("Ei ole riittävästi");
 			Vaihtoehto vaihtoehto11 = new Vaihtoehto("Ei ole lainkaan");
